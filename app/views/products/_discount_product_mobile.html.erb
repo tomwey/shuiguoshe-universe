@@ -1,0 +1,23 @@
+<% cache("#{item.updated_at.strftime("%Y%m%d%H%M%S")}_#{item.orders_count}_#{controller_name}") do %>
+  <div class="product">
+    <div class="col-xs-6 <%= index % 2 == 0 ? "even" : "odd" %>">
+      <div class="thumbnail">
+        <a href="<%= product_path(item) %>" class="item-link" title="<%= item.title %>">
+          <%= image_tag item.image.thumb, alt: item.title, class: "img-responsive" %>
+          <div class="titile-info">
+            <h1 class="title"><%= truncate(item.title, length: 8) %></h6>
+          </div>
+          <div class="text-muted small-text units"><%= item.units %></div>
+          <div class="price">
+            <span class="green">￥<span class="numeric"><%= number_with_precision(item.low_price, precision: 2) %></span></span>
+            <del class="text-muted small-text">￥<%= number_with_precision(item.origin_price, precision: 2) %></del>
+          </div>
+          <div class="countdown" data-countdown="<%= item.discounted_at.strftime("%Y-%m-%d %H:%M:%S") %>"></div>
+          <div class="price-extra">
+            <span class="purchased small-text">已售<%= item.orders_count %>件</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+<% end %>

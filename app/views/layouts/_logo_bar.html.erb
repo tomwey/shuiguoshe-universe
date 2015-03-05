@@ -1,0 +1,56 @@
+<div id="header">
+<div class="container">
+  <div class="row logo_bar_box">
+    <div class="col-md-7">
+      <a class="logo" href="/"><%= image_tag 'logo.png', alt: "水果社" %></a>
+      <div class="nav-menu">
+        <%= link_to "首页", root_path, class: "#{@current == 'home_index' ? "active" : ""}" %><span class="vertical-divider">|</span>
+        <% ProductType.all_types.each do |type| %>
+          <%= link_to type.name, category_items_path(type), class: "#{controller_name == 'products' and params[:type_id].to_i == type.id ? "active" : ""}" %><span class="vertical-divider">|</span>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="wechat pull-left">
+        <div class="u-show-wechat">
+          <span class="link-text" id="u-wechat">官方微信</span>
+          <div class="hover-mask"></div>
+          <div class="wechat-panel" id="wechat-panel">
+            <p class="wechat-tip">
+              使用官方微信下单更便捷<br/>可随时查看订单状态
+            </p>
+            
+            <%= image_tag "wechat.jpg", alt: "水果社官方微信" %>
+            
+          </div>
+        </div>
+      </div>
+      <div class="pull-right order-btn-box" id="cart-mini">
+        <div class="u-show-cart">
+          <%= cart_tag %>
+          <div class="hover-mask"></div>
+          <div class="cart-panel" id="cart-panel">
+            <div class="cart-panel-head">
+              最近加入的商品
+            </div>
+            <div class="cart-panel-body" id="cart_2_panel_body">
+              <%= render 'carts/cart_2' %>
+            </div>
+            <div class="cart-panel-foot">
+              <div class="row">
+                <div class="col-sm-10">
+                  共<span id="cart_2_total_items_2"><%= cart.line_items_count %></span>件商品，共<span class="green">¥</span><span class="price green" id="cart_2_total_price"><%= product_price_tag(cart.total_price) %></span>
+                </div>
+                <div class="col-sm-2">
+                  <%= link_to "去购物车", show_cart_path, class: "btn btn-sm btn-success pull-right" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+</div>

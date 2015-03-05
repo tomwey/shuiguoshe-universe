@@ -1,0 +1,9 @@
+<% if @ads.any? %>
+  <% cache cache_key_for('sidebar_ads', @ads) do %>
+  <% @ads.each do |ad| %>
+    <div class="sidebar-right-box">
+      <%= render_sidebar_ad_image(ad) %>
+    </div>
+  <% end %>
+  <% end %>
+<% end %>

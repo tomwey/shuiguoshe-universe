@@ -1,0 +1,17 @@
+<% cache [sale, render_distance_days(sale)] do %>
+<div class="sale-item clearfix">
+  <a href="<%= sale_path(sale) %>" target="_blank" title="<%= sale.title %>">
+    <%= image_tag sale.cover_image.large, style: "width: 690px; height: 250px;" %>
+    <div class="desc-container">
+        <div class="pull-left">
+            <%= image_tag(sale.logo.logo_normal, alt: sale.title) if sale.logo %>
+            <span class="name"><%= sale.title %></span>
+        </div>
+        <div class="pull-right">
+            <span class="time-left pull-left">剩余<%= render_distance_days(sale) %>天</span>
+            <span class="discount pull-left"><%= raw sale.subtitle %></span>
+        </div>
+    </div>
+  </a>
+</div>
+<% end %>

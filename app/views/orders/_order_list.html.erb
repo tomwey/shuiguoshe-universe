@@ -1,0 +1,5 @@
+<% cache cache_key_for("#{cache_prefix}", @orders) do %>
+<div class="orders" id="orders_list_table">
+  <%= render 'orders/order_list2' %>
+</div>
+<% end %>

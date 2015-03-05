@@ -1,0 +1,71 @@
+// 更新loading状态
+$("#cart_1_<%= @line_item_id %>_link").data("loading", '0');
+$("#cart_2_<%= @line_item_id %>_link").data("loading", '0');
+
+<% if @success %>
+// 删除自身
+$("#cart_1_<%= @line_item_id %>").remove();
+$("#cart_2_<%= @line_item_id %>").remove();
+$("#<%= @order_line_item_id %>").remove();
+
+// 计算购物车总数
+var total = $("#cart_2_total_items").data("cart-total");
+total = parseInt(total) - <%= @line_item.quantity %>;
+
+$("#cart_2_total_items").data("cart-total", total);
+$("#cart_2_total_items").text(total);
+
+$("#cart_2_total_items_2").text(total);
+
+// 计算购物车总价
+var totalPrice = "<%= product_price_tag(cart.total_price) %>"
+$("#cart_1_total_price").text(totalPrice);
+$("#cart_2_total_price").text(totalPrice);
+
+// 计算确认下单页面的总额
+$("#all-products-total-price").text("<%= product_price_tag(cart.total_price) %>");
+//$("#order-total-price").text("<%= product_price_tag(order_total_price(cart)) %>");
+//$("#order_total_price").val($("#order-total-price").text());
+
+// 抵扣
+$("#discount-price").data("discount-price", "<%= product_price_tag(user_discount_score(cart.total_price) / 100.0) %>");
+
+// 积分
+$("#user-current-score").data("user-current-score", parseInt("<%= user_discount_score(cart.total_price) %>"));
+
+if ( $('#new_order :checkbox').is(':checked') ) {
+  $("#order_discount_price").val($("#discount-price").data("discount-price"));
+  $("#order_user_score").val($("#user-current-score").data("user-current-score"));
+} else {
+  $("#order_discount_price").val('0.00');
+  $("#order_user_score").val(0);
+}
+
+$("#discount-price").text($("#order_discount_price").val());
+
+// 计算总价
+var products_total_price = $("#all-products-total-price").text();
+var discount_price = $("#order_discount_price").val();
+var total_price = (parseFloat(products_total_price) - parseFloat(discount_price)).toFixed(2);
+
+$("#order_total_price").val(total_price);
+$("#order-total-price").text($("#order_total_price").val());
+
+// 计算积分
+$("#user-current-score").text($("#user-current-score").data("user-current-score"));
+$("#user-current-discount-price").text($("#discount-price").data("discount-price"));
+
+// 处理购物车为空
+if (total == 0) {
+  <% if mobile? %>
+  $("#my-cart").replaceWith("<%= j render 'carts/cart_mobile' %>");
+  <% else %>
+  $("#my-cart").replaceWith("<%= j render 'carts/cart_1' %>");
+  <% end %>
+  $("#cart_2_panel_body").html("<%= j render 'carts/cart_2' %>");
+  
+  $("#new_order_line_items").html("<%= j render 'orders/line_items' %>");
+  $('#new_order_submit').prop('disabled', true);
+}
+
+<% end %>

@@ -1,0 +1,135 @@
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "开始下单" %>
+
+<div class="container">
+  <div class="new-order-container">
+    <%= simple_form_for(@order, html: { class: "form-horizontal" },wrapper: :horizontal_form,
+            wrapper_mappings: {
+              check_boxes: :horizontal_radio_and_checkboxes,
+              radio_buttons: :horizontal_radio_and_checkboxes,
+              file: :horizontal_file_input,
+              boolean: :horizontal_boolean
+            }) do |f| %>
+      
+      <%= render "/shared/error_messages", target: @order %>
+      
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>收货信息</h4>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <%= f.label :mobile, "* 收货人手机", class: "control-label col-xs-12" %>
+            <div class="col-xs-12">
+              <%= f.text_field :mobile, placeholder: "输入11位正确手机号", class: "form-control", value: @order.mobile %>
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <%= f.label :apartment_id, "* 收货人小区", class: "control-label col-xs-12" %>
+            <div class="col-xs-12">
+              <%= f.select :apartment_id, Apartment.opened.map { |a| [a.deliver_address(current_user), a.id] }, { prompt: "选择小区", selected: @order.apartment_id}, { class: "form-control" } %>
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+      
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>商品清单</h4>
+        </div>
+        <div class="panel-body">
+          <div class="order-items">
+            <table class="table">
+              <% cart.line_items.each do |item| %>
+                <%= render 'orders/line_item_mobile', line_item: item %>
+              <% end %>
+            </table>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="order-note">
+            <%= f.input :note, label: false, placeholder: "提醒注意的事项 (选填)" %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4>结算信息</h4>
+        </div>
+        <div class="panel-body">
+          <div class="order-price">
+            <p>商品总额：￥<span id="all-products-total-price"><%= product_price_tag(@cart.total_price) %></span></p>
+            <p>抵扣：-￥<span id="discount-price" data-discount-price="<%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %>"><%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %></span></p>
+            <p>订单总额：￥<span id="order-total-price"><%= product_price_tag(order_total_price(@cart)) %></span></p>
+            <%= f.input :discount_price, as: :hidden, input_html: { value: "#{product_price_tag(user_discount_score(@cart.total_price) / 100.0)}" } %>
+            <%= f.input :total_price, as: :hidden, input_html: { value: "#{product_price_tag(order_total_price(@cart))}" } %>
+          </div>
+        </div>
+        <% if current_user.score > 0 %>
+        <div class="panel-footer">
+          <div class="order-score">
+            <div class="checkbox">
+                <label>
+                  <input type="checkbox" id="discount-checkbox" data-current-score="<%= user_discount_score(@cart.total_price) %>" checked> 您目前的可用积分为<span id="user-current-score" data-user-current-score="<%= user_discount_score(@cart.total_price) %>"><%= user_discount_score(@cart.total_price) %></span>，可以抵￥<span id="user-current-discount-price"><%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %></span>
+                </label>
+                <input type="hidden" name="user_score" id="order_user_score" value="<%= user_discount_score(@cart.total_price) %>" />
+            </div>
+          </div>
+          
+        </div>
+        <% end %>
+      </div>
+
+      <div class="bottom-buttons">
+        <div class="pull-right">
+          商品总额：￥<span id="order-total-price2"><%= product_price_tag(order_total_price(@cart)) %></span>
+          <%= f.submit '确认下单', class: "submit-button", id: 'new_order_submit', 'data-disable-with' => '正在下单...' %>
+        </div>
+      </div>
+      
+    </div>
+    <% end %>
+  
+  </div>
+</div>
+
+
+<% content_for :scripts do %>
+<script>
+
+$(document).ready(function () {
+  
+  $('#discount-checkbox').click(function() {
+      var $this = $(this);
+      if ($this.is(':checked')) {
+        $("#discount-price").text($("#discount-price").data("discount-price"));
+        $("#order_user_score").val(parseInt($("#user-current-score").data("user-current-score")));
+      } else {
+        $("#discount-price").text("0.00");
+        $("#order_user_score").val("0");
+      }
+      
+      $("#order_discount_price").val($("#discount-price").text());
+      
+      var products_total_price = $("#all-products-total-price").text();
+      var discount_price = $("#order_discount_price").val();
+      
+      var total_price = (parseFloat(products_total_price) - parseFloat(discount_price)).toFixed(2);
+      
+      // input hide
+      $("#order_total_price").val(total_price);
+      $("#order-total-price").text($("#order_total_price").val());
+      $("#order-total-price2").text($("#order_total_price").val());
+      // input hide
+  });
+  
+});
+
+</script>
+<% end %>
+
+
+

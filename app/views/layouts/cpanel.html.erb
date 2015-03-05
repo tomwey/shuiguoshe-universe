@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>水果社后台管理系统</title>
+
+    <%= stylesheet_link_tag  'cpanel', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'cpanel', 'data-turbolinks-track' => true %>
+    
+    <link rel="shortcut icon" href="<%= asset_path("favicon.ico") %>" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+      
+    <%= csrf_meta_tags %>
+      
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">回到前台</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/cpanel">首页</a></li>
+            <% if current_user.super_manager? %>
+            <li><%= link_to "站点配置", cpanel_site_configs_path %></li>
+            <% end %>
+            <li><%= link_to '产品种类', cpanel_product_types_path %></li>
+            <% if current_user.super_manager? %>
+            <li><%= link_to '卖场', cpanel_sales_path %></li>
+            <% end %>
+            <% if current_user.site_editor? %>
+            <li><%= link_to '产品', cpanel_products_path %></li>
+            <% end %>
+            <% if current_user.admin? %>
+            <li><%= link_to '小区', cpanel_apartments_path %></li>
+            <% end %>
+            <% if current_user.admin? %>
+            <li><%= link_to "用户", cpanel_users_path %></li>
+            <% end %>
+            <% if current_user.admin? %>
+            <li><%= link_to "订单", cpanel_orders_path %></li>
+            <% end %>
+            <li><%= link_to "邀请", cpanel_invites_path %></li>
+            <li><%= link_to "留言", cpanel_messages_path %></li>
+            <li><%= link_to "Banner", cpanel_banners_path %></li>
+            <li><%= link_to "边栏广告", cpanel_sidebar_ads_path %></li>
+            <li><%= link_to "公告", cpanel_newsblasts_path %></li>
+            <li><%= link_to "文章", cpanel_pages_path %></li>
+          </ul>
+          <!--p class="navbar-text pull-right"><span class="label label-success">管理员 [<%= current_user.mobile %>]</span></p -->
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <%= notice_message %>
+      <%= yield %>
+    </div>
+    
+  </body>
+</html>

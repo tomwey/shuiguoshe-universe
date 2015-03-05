@@ -1,0 +1,23 @@
+<% cache [line_item.id, line_item.quantity, line_item.product_updated_at] do %>
+<tr id="cart_1_line_item_<%= line_item.id %>" class="cart-line-item">
+  <td width="30%">
+    <%= link_to image_tag(line_item.product.image.url(:small)), product_path(line_item.product), title: line_item.product.title %>
+  </td>
+  <td width="50%">
+    <div class="product-title">
+      <%= line_item.product.title %>
+    </div>
+    <div class="product-units">
+      <%= line_item.product.units %>
+    </div>
+    <div class="extra-price">
+      ¥<%= product_price_tag(line_item.product.low_price) %> × <%= line_item.quantity %>
+    </div>
+  </td>
+  <td width="20%">
+    <div class="total-price">
+      ¥<%= product_price_tag(line_item.total_price) %>
+    </div>
+  </td>
+</tr>
+<% end %>

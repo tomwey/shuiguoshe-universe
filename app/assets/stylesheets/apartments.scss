@@ -1,0 +1,17 @@
+$common-border-color: rgb(204,204,204);
+
+.apartments {
+  li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 30px;
+    margin-bottom: 20px;
+    width: 180px;
+    border: 1px solid $common-border-color;
+    text-align: center;
+  }
+  
+  .apartment {
+//    width: 300px;
+  }
+}

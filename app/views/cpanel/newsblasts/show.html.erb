@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @newsblast.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @newsblast.body %>
+</p>
+
+<%= link_to 'Edit', edit_newsblast_path(@newsblast) %> |
+<%= link_to 'Back', newsblasts_path %>

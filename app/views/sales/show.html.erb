@@ -1,0 +1,60 @@
+<% content_for :sale_ad do %>
+  <div class="sale_ad" style="background: url('<%= @sale.ad_image.url(:ad_normal) %>') center no-repeat">
+    
+  </div>
+<% end %>
+
+<div class="row container-box">  
+  <div class="col-md-12">
+    
+    <div class="sale-heading">
+      <div class="pull-right green f16 timeLeft">
+        <span id="timeLeft"></span>
+      </div>
+      <%= image_tag @sale.logo.logo_normal %>
+      <span class="sale-title"><%= @sale.title %></span>
+    </div>
+    
+    <% if @products.any? %>
+    <% cache cache_key_for(@cache_prefix, @products) do %>
+      <%= render_grid_for @products, 4 %>
+    <% end %>
+    <% else %>
+      没有找到相关记录!
+    <% end %>
+  </div>
+</div>
+
+<% content_for :scripts do %>
+<script>
+
+// function updateButtonState() {
+//   var select = $("#order_apartment_id");
+//   if (select.val() == '') {
+//     $("#save_address").attr("disabled", true);
+//   } else {
+//     $("#save_address").removeAttr("disabled");
+//   }
+// }
+
+
+$(function() {
+  
+  <% if @sale.closed_at %>
+  $("#timeLeft").countdown("<%= @sale.closed_at.strftime("%Y-%m-%d %H:%M:%S") %>")
+    .on('update.countdown', function(event) {
+      $(this).html(event.strftime('<span class="glyphicon glyphicon-time"></span>' + '&nbsp;&nbsp;剩余' + '%D天%H小时%M分%S秒'));
+    })
+    .on('finish.countdown', function(event) {
+      $("#submit-button").attr("disabled", true);
+      $("#submit-button").attr("class", "btn btn-warning");
+      $("#submit-button").text("活动已结束,不支持预订");
+      $(this).text("");
+    });
+  <% end %>
+  
+
+});
+
+</script>
+<% end %>

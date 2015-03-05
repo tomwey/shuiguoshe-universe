@@ -1,0 +1,80 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      <div class="row">
+        <div class="col-md-2">
+          <p style="padding-top:10px;">订单列表</p>
+        </div>
+        <div class="col-md-6">
+          <div style="text-align:center;font-weight:normal; font-size:12px;">
+            <%= form_tag search_cpanel_orders_path, method: 'GET', class: "form-inline", role: "form" do  %>
+            <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "输入订单号或订货人电话或配送地址" %>
+            <%= submit_tag '搜索', class: "btn btn-primary btn-sm" %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="pull-right" style="font-size: 12px;">
+            <ul class="nav nav-pills" role="tablist">
+              <li role="presentation" class="<%= controller_name == "orders" and action_name == "index" ? "active" : "" %>"><%= link_to "全部", cpanel_orders_path %></li>
+              <li role="presentation" class="<%= controller_name == "orders" and action_name == "today_normal" ? "active" : "" %>"><%= link_to "未完成", today_normal_cpanel_orders_path %></li>
+              <li role="presentation" class="<%= controller_name == "orders" and action_name == "completed" ? "active" : "" %>"><%= link_to "已完成", completed_cpanel_orders_path %></li>
+              <li role="presentation" class="<%= controller_name == "orders" and action_name == "canceled" ? "active" : "" %>"><%= link_to "已取消", canceled_cpanel_orders_path %></li>
+            </ul>
+          </div>
+        </div> 
+      </div> <!-- end row -->
+    </h3>
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>订单信息</th>
+          <th>订单实付(元)</th>
+          <th>抵扣(元)</th>
+          <th>收货人手机</th>
+          <th>收货人小区</th>
+          <th>下单日期</th>
+          <th>下单人</th>
+          <th>订单状态</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= link_to order.order_no, [:cpanel, order] %></td>
+            <td>￥<%= format("%.2f", order.total_price) %></td>
+            <td>-￥<%= format("%.2f", order.discount_price) %></td>
+            <td><%= order.user_mobile %></td>
+            <td><%= order.user_apartment_name %></td>
+            <td><%= order.created_at.strftime('%Y-%m-%d %H:%M:%S') %></td>
+            <td><%= order.user.try(:mobile) %></td>
+            <td><%= render_order_state(order) %></td>
+            <td><%= order.note %></td>
+            <td>
+              <% if order.can_cancel? %>
+                <%= link_to "取消", cancel_cpanel_order_path(order), class: "btn btn-primary btn-xs", method: :patch, confirm: "你确定吗？" %>
+              <% end %>
+              <% if order.can_prepare_deliver? %>
+                <%= link_to "准备配送", prepare_deliver_cpanel_order_path(order), class: "btn btn-primary btn-xs", method: :patch, confirm: "你确定吗？" %>
+              <% end %>
+              <% if order.can_deliver? %>
+                <%= link_to "开始配送", deliver_cpanel_order_path(order), class: "btn btn-primary btn-xs", method: :patch, confirm: "你确定吗？" %>
+              <% end %>
+              <% if order.can_complete? %>
+                <%= link_to "确认收货", complete_cpanel_order_path(order), class: "btn btn-success btn-xs", method: :patch, confirm: "你确定吗？" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="text-center"><%= will_paginate @orders, renderer: BootstrapPagination::Rails %></div>
+  
+</div>

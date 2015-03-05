@@ -1,0 +1,8 @@
+<% if mobile? %>
+  
+  <%= render "layouts/mobile_navbar", left: "back", right: "home", title: "我的购物车" %>
+  
+<%= render 'cart_mobile' %>
+<% else %>
+<%= render 'cart_1' %>
+<% end %>

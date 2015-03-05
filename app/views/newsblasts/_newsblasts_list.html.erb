@@ -1,0 +1,14 @@
+<% if @newsblasts.any? %>
+<% cache(cache_key_for('newsblasts', @newsblasts)) do %>
+<div class="sidebar-right-box">
+  <h2>水果社公告</h2>
+  <ul>
+    <% @newsblasts.each_with_index do |newsblast, index| %>
+    <% cache newsblast do %>
+    <li><div class="item-line <%= index == @newsblasts.size - 1 ? "last" : "" %>"><%= link_to truncate(newsblast.title, length: 20), newsblast, target: "_blank" %></div></li>
+    <% end %>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+<% end %>

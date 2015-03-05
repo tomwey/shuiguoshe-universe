@@ -1,0 +1,82 @@
+$("#<%= @item_id %>").data("loading", '0');
+
+<% if @success %>
+
+<% if mobile? %>
+  var container = $("<div></div>");
+  container.text("成功加入了购物车");
+  container.css({
+    'opacity': '0.0',
+    'position': 'fixed',
+    'left': '50%',
+    'top': '50%',
+    'margin-top': '-20px',
+    'margin-left': '-75px',
+    'width': '150px',
+    'height': '40px',
+    'z-index': '10000',
+    'padding': '10px',
+    'background-color': 'black',
+    'color': 'white',
+    'font-size': '16px',
+    'text-align': 'center',
+    'border-radius': '5px',
+    'border': '1px solid #ccc',
+  })
+  .appendTo($('body'))
+  .animate({
+    'opacity': 0.8
+  }, 1000);
+  
+  container.delay(2000).fadeOut();
+  // container.animate({
+  //   'opacity': 0.0
+  // }, 1000, function() {
+  //   $(this).detach();
+  // });
+<% else %>
+// 计算购物车总数
+var total = $("#cart_2_total_items").data("cart-total");
+total = parseInt(total) + 1;
+$("#cart_2_total_items").data("cart-total", total);
+$("#cart_2_total_items").text(total);
+
+$("#cart_2_total_items_2").text(total);
+
+$("#cart_2_panel_body").html("<%= j render 'carts/cart_2' %>");
+$("#cart_2_total_price").text("<%= product_price_tag(cart.total_price) %>");
+
+// 添加到购物车动画
+var cart = $("#u-cart-result");
+var imgtodrag = $("#<%= @product_id %>").find("img").eq(0);
+if (imgtodrag) {
+  var imgclone = imgtodrag.clone().offset({
+    top: imgtodrag.offset().top,
+    left: imgtodrag.offset().left
+  })
+  .css({
+    'opacity': '0.5',
+    'position': 'absolute',
+    'height': '150px',
+    'width': '150px',
+    'z-index': '10000'
+  })
+  .appendTo($('body'))
+  .animate({
+    'top': cart.offset().top + 10,
+    'left': cart.offset().left + 10,
+    'width': 75,
+    'height': 75,
+  }, 1000);
+  
+  imgclone.animate({
+    'width': 0,
+    'height': 0
+  }, function() {
+    $(this).detach();
+  });
+}
+<% end %>
+<% else %>
+
+<% end %>

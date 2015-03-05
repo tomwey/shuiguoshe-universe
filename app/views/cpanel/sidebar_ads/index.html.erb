@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">边栏广告列表</h3>
+    
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>广告图片</th>
+          <th>广告链接</th>
+          <th>广告简介</th>
+          <th>at</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @sidebar_ads.each do |sidebar_ad| %>
+          <tr>
+            <td><%= sidebar_ad.id %></td>
+            <td><%= render_sidebar_ad_icon(sidebar_ad) %></td>
+            <td><%= sidebar_ad.url %></td>
+            <td><%= sidebar_ad.summary %></td>
+            <td><%= sidebar_ad.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+            <td>
+              <%= link_to '编辑', edit_cpanel_sidebar_ad_path(sidebar_ad), class: "btn btn-xs btn-default" %>
+              <% if current_user.super_manager? %>
+              <%= link_to '删除', [:cpanel, sidebar_ad], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+<%= link_to '新建边栏广告', new_cpanel_sidebar_ad_path, class: "btn btn-primary" %>
+

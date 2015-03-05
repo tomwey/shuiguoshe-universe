@@ -1,0 +1,24 @@
+<% if mobile? %>
+  <% content_for :right_bar_button do %>
+    <a href="<%= root_path %>" class="navbar-button right home"></a>
+  <% end %>
+  
+  <div class="container">
+    <div class="row product_types">
+      <% ProductType.all_types.each do |type| %>
+      <div class="col-sm-6 col-xs-6">
+        <%= link_to type.name, category_items_path(type) %>
+      </div>
+      <% end %>
+    </div>
+    
+    <div class="pages">
+      <%= raw @page.body %>
+    </div>
+  </div>
+  
+<% else %>
+<div class="pages">
+  <%= raw @page.body %>
+</div>
+<% end %>

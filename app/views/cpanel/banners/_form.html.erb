@@ -1,0 +1,35 @@
+<%= simple_form_for([:cpanel, @banner], html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+  <%= render "/shared/error_messages", target: @banner %>
+
+  <div class="col-md-6 col-md-offset-3">
+    
+    <%- if @banner.image.small %>
+      <div class="col-sm-10 col-sm-offset-3">
+        <%= image_tag @banner.image.small if @banner.image.small.present?  %>
+      </div>
+    <%- end %>
+    
+    <%= f.input :image, label: "广告图片" %>
+    <%= f.hidden_field :image_cache %>
+    
+    <%= f.input :url, label: "广告链接" %>
+    <%= f.input :title, label: "广告标题" %>
+    <%= f.input :subtitle, label: "广告子标题" %>
+    <%= f.input :intro, label: "广告简介" %>
+    <%= f.input :sort, label: "显示顺序" %>
+      
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <%= f.submit "提交", class: "btn btn-primary" %>&emsp;<%= link_to '返回', cpanel_banners_path, class: "btn btn-default" %>
+      </div>
+    </div>
+  </div>
+
+  
+<% end %>

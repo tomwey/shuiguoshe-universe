@@ -1,0 +1,114 @@
+<% if mobile? %>
+  
+  <%= render "layouts/mobile_navbar", left: "back", right: "", title: "手机快速注册" %>
+  
+  <div class="container">
+    <div class="user-login-form">
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: '' },
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+            
+            <%= f.input :mobile, label: false, placeholder: '请输入手机号' %>
+            
+            <div class="auth-code-container">
+              <%= f.input :code, label: false,placeholder: '输入6位手机验证码', input_html: { style: "width: 150px" } %>
+              <div class="get-auth-code">
+                <a onclick="App.getCode(this)" class="btn btn-warning" id="auth_code">获取验证码</a>
+              </div>
+            </div>
+          
+          <div style="display:none">
+            <%= f.hidden_field :code_type, value: "1"  %>
+          </div>
+      
+          <%= f.input :password, label: false, autocomplete: "off", placeholder: "请输入密码" %>
+
+          <button type="submit" class="btn btn-success btn-block">注册</button>
+          
+        <% end %>
+    </div>
+    
+  </div>
+
+<% else %>
+<div class="row">
+  <div class="col-md-8">
+    <div class="user-login-form">
+      <h2>会员注册
+        <% if SiteConfig.sign_up_score and SiteConfig.sign_up_score.to_i > 0 %>
+        <span class="reg-tip">赠送<%= SiteConfig.sign_up_score %>积分, 抵扣<%= SiteConfig.sign_up_score.to_i / 100 %>元</span>
+        <% end %>
+      </h2>
+      <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'form-horizontal' },
+        wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <%= f.input :mobile, label: "手机", placeholder: "请输入11位正确的手机号", input_html: { style: "width:300px;" } %>
+          <!--div class="form-group string required user_code">
+            <label class="string required control-label col-sm-3 control-label" for="user_code">
+              <abbr title="required">*</abbr> 验证码
+            </label>
+            <div class="col-sm-4">
+              <input class="string required form-control" id="user_code" name="user[code]" placeholder="请输入6位验证码" style="width:180px;" type="text" />
+            </div>
+            <div class="col-sm-3">
+              <a onclick="App.getCode(this)" class="btn btn-warning" id="auth_code">获取验证码</a>
+            </div>
+          </div-->
+            
+            <div style="display:none">
+              <%= f.input :code_type, as: :hidden, input_html: { value: "1" } %>
+            </div>
+            
+            <!-- div class="captcha-code-container">
+              <div class="captcha-container">
+                <%= captcha_tag id: "captcha" %><a onclick="refreshCode(this);">换一张</a>
+              </div>
+              <%= f.input :captcha, label: "图片验证码", placeholder: "输入图片验证码", input_html: { style: "width:150px;" }, required: true %>
+            </div -->
+            
+            <div class="auth-code-container">
+              <%= f.input :code, label: "手机验证码", placeholder:"请输入6位验证码", input_html: { style: "width:150px;" }, required: true %>
+              <div class="get-auth-code">
+                <a onclick="App.getCode(this)" class="btn btn-warning" id="auth_code">获取验证码</a>
+              </div>
+            </div>
+          <%= f.input :password, label: "密码", placeholder: "密码至少6位", input_html: { style: "width:300px;" }, required: true %>
+          <%= f.input :password_confirmation, label: "确认密码", placeholder: "请确保两次密码输入一致", input_html: { style: "width:300px;" }, required: true %>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <button type="submit" class="btn btn-success">注册</button>
+            </div>
+          </div>
+          
+      <% end %>
+    </div>
+    
+  </div>
+  <div class="col-md-4">
+    <div class="user-reg-info">
+      <h3>已经是水果社会员？</h3>
+      <%= link_to "立即登录", new_user_session_path, class: "btn btn-success" %>
+    </div>
+  </div>
+</div>
+<% end %>
+
+<% content_for :scripts do %>
+<script>
+function refreshCode(el) {
+  var src = "<%= root_url %>captcha?i=" + new Date().getTime();
+  $("#captcha").prop('src', src);
+}
+</script>
+<% end %>

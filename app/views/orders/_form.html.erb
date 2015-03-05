@@ -1,0 +1,204 @@
+<div class="user-box container-box">
+  <h2>开始下单</h2>
+  
+  <%= simple_form_for(@order, html: { class: "form-horizontal" },wrapper: :horizontal_form,
+          wrapper_mappings: {
+            check_boxes: :horizontal_radio_and_checkboxes,
+            radio_buttons: :horizontal_radio_and_checkboxes,
+            file: :horizontal_file_input,
+            boolean: :horizontal_boolean
+          }) do |f| %>
+    <%= render "/shared/error_messages", target: @order %>
+    
+    <div class="order-info-container">
+      <h3>填写并核对订单信息</h3>
+      <div class="order-item-info">
+        <h4>收货人信息</h4>
+        
+          <div class="item-info">
+            <!-- div class="radio">
+              <label>
+                  <input type="radio" name="optionsRadios" value="me" checked>
+                  配送给自己
+                </label>&nbsp;&nbsp;
+                <label>
+                    <input type="radio" name="optionsRadios" value="other">
+                    配送给他人
+                </label>
+            </div -->
+                  
+          <div class="deliver-info" style="margin-top: 20px; margin-left: -40px;">
+            <div class="form-group">
+              <%= f.label :mobile, "* 收货人手机", class: "control-label col-sm-2" %>
+              <div class="col-sm-3">
+                <%= f.text_field :mobile, placeholder: "输入11位正确手机号", class: "form-control", value: @order.mobile %>
+              </div>
+            </div>
+          
+            <div class="form-group">
+              <%= f.label :apartment_id, "* 收货人小区", class: "control-label col-sm-2" %>
+              <%= deliver_select_tag f %>
+            </div>
+            
+          </div>
+        </div> <!-- end item-info -->
+      </div> <!-- end order-intem-info -->
+      <div class="order-item-info">
+        <h4>支付及配送方式</h4>
+        <div class="item-info">
+          目前只支持货到付款<br>
+          每天18:00-21:00之间配送
+        </div>
+        <div class="item-info">
+          <%= raw SiteConfig.deliver_intro %>
+        </div>
+      </div>
+      <div class="order-item-info">
+        <h4>商品清单</h4>
+        <div class="item-info" id="new_order_line_items">
+          <%= render 'orders/line_items' %>
+        </div>
+        
+        <div class="form-group">
+          <%= f.label :note, "备注信息", class: "control-label col-sm-2 col-sm-offset-5" %>
+          <div class="col-sm-5">
+            <%= f.text_field :note, placeholder: "提醒注意的事项 (选填)", class: "form-control" %>
+          </div>
+        </div>
+        
+        <div class="item-info" style="text-align:right">
+          <p>商品总额：￥<span id="all-products-total-price"><%= product_price_tag(@cart.total_price) %></span></p>
+          <p>抵扣：-￥<span id="discount-price" data-discount-price="<%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %>"><%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %></span></p>
+          <p>订单总额：￥<span id="order-total-price"><%= product_price_tag(order_total_price(@cart)) %></span></p>
+          <%= f.input :discount_price, as: :hidden, input_html: { value: "#{product_price_tag(user_discount_score(@cart.total_price) / 100.0)}" } %>
+          <%= f.input :total_price, as: :hidden, input_html: { value: "#{product_price_tag(order_total_price(@cart))}" } %>
+          
+          <% if current_user.score > 0 %>
+          <div class="checkbox">
+              <label>
+                <input type="checkbox" data-current-score="<%= user_discount_score(@cart.total_price) %>" checked> 您目前的可用积分为<span id="user-current-score" data-user-current-score="<%= user_discount_score(@cart.total_price) %>"><%= user_discount_score(@cart.total_price) %></span>，可以抵￥<span id="user-current-discount-price"><%= product_price_tag(user_discount_score(@cart.total_price) / 100.0) %></span>
+              </label>
+              <input type="hidden" name="user_score" id="order_user_score" value="<%= user_discount_score(@cart.total_price) %>" />
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="order-item-info order-footer">
+        <%= link_to "返回修改购物车", show_cart_path, class: "btn btn-default" %>&nbsp;&nbsp;<%= f.submit '确认下单', class: "btn btn-danger", id: 'new_order_submit', 'data-disable-with' => '正在下单...' %>
+      </div>
+    </div>
+  <% end %>
+  
+</div>
+
+<% content_for :scripts do %>
+<script>
+
+$(document).ready(function () {
+
+  $("#order_apartment_id").change(function() {
+    if ($(this).val() == '') {
+      $("#save_address").attr("disabled", true).trigger("chosen:updated");
+    } else {
+      $("#save_address").removeAttr("disabled").trigger("chosen:updated");
+    }
+  });
+  
+  $('input[name=optionsRadios]').change(function() {
+    // alert($(this).val());
+    if ($(this).val() == 'me') {
+      $('#order_mobile').attr("readonly", true);
+      $('#order_mobile').val("<%= current_user.mobile %>");
+      
+      if ($('#order_apartment_id').data('current') != '') {
+        // $('#order_apartment_id').attr("disabled", true);
+        $('#order_apartment_id').prop('disabled', true).trigger("chosen:updated");
+        var index = parseInt($('#order_apartment_id').data('current'));
+        $('#order_apartment_id').prop('selectedIndex', index - 1).trigger("chosen:updated");
+      
+        // $("#order_apartment_id option").filter(function(){
+        //   // alert($(this).attr("user-apartment-id"));
+        //     if ($(this).val() == $(this).attr("user-apartment-id")) {
+        //         $(this).prop("selected",true);
+        //     } else {
+        //         $(this).removeAttr("selected");
+        //     }
+        // });
+        
+        $("#hide_order_apartment_input").html('<input type="hidden" name="order[apartment_id]" value="' + $('#order_apartment_id').data('current') + '">');
+      
+        $('#edit-user-apartment').html('<a class="btn btn-sm btn-success" onclick="updateApartment()">修改</a>');
+      } else {
+        // $('#order_apartment_id').removeAttr("disabled");
+        
+        // $("#order_apartment_id option").each(function(){
+        //   $(this).removeAttr("selected");
+        // });
+        $('#order_apartment_id').prop('disabled', false).trigger("chosen:updated");
+        $('#order_apartment_id').prop('selectedIndex', '-1').trigger("chosen:updated");
+        
+        
+        $('#edit-user-apartment').html('<a class="btn btn-warning" data-user-id="<%= current_user.id %>" onclick="App.doSaveAddress(this)" id="save_address">保存到配送设置</a>');
+        
+        $("#hide_order_apartment_input").html("");
+      }
+      
+    } else {
+      $('#order_mobile').removeAttr("readonly");
+      $('#order_mobile').val("");
+      
+      $("#edit-user-apartment").html("");
+      // $("#order_apartment_id").removeAttr("disabled");
+      // $("#order_apartment_id option").each(function(){
+      //   $(this).removeAttr("selected");
+      // });
+      
+      $("#hide_order_apartment_input").html("");
+      
+      // $("#order_apartment_id").prop("disabled",false).trigger("liszt:updated");
+      $('#order_apartment_id').prop('disabled', false).trigger("chosen:updated");
+      $('#order_apartment_id').prop('selectedIndex', '-1').trigger("chosen:updated");
+    }
+    
+    // $("select").trigger("chzn:updated");
+    
+  });
+  
+  $('#new_order :checkbox').click(function() {
+      var $this = $(this);
+      if ($this.is(':checked')) {
+        $("#discount-price").text($("#discount-price").data("discount-price"));
+        $("#order_user_score").val(parseInt($("#user-current-score").data("user-current-score")));
+      } else {
+        $("#discount-price").text("0.00");
+        $("#order_user_score").val("0");
+      }
+      
+      $("#order_discount_price").val($("#discount-price").text());
+      
+      var products_total_price = $("#all-products-total-price").text();
+      var discount_price = $("#order_discount_price").val();
+      
+      var total_price = (parseFloat(products_total_price) - parseFloat(discount_price)).toFixed(2);
+      
+      // input hide
+      $("#order_total_price").val(total_price);
+      $("#order-total-price").text($("#order_total_price").val());
+      // input hide
+  });
+  
+});
+
+function updateApartment () {
+    $('#edit-user-apartment').html('<a class="btn btn-warning" data-user-id="<%= current_user.id %>" onclick="App.doSaveAddress(this)" id="save_address">保存到配送设置</a>');
+    // $("#order_apartment_id").removeAttr("disabled");
+    $('#order_apartment_id').prop('disabled', false).trigger("chosen:updated");
+    
+    $("#hide_order_apartment_input").html("");
+};
+
+</script>
+<% end %>
+
+
+

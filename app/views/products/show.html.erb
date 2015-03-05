@@ -1,0 +1,196 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "#{truncate(@product.title, length: 8)}" %>
+  
+  <div class="container">
+    <div class="product-detail">
+      <div class="large-image">
+        <%= image_tag @product.image_url(:large), alt: @product.title, class: "img-responsive" %>
+      </div>
+      <h1 class="title"><%= @product.title %></h1>
+      
+      <div class="price-extra">
+        <div class="row">
+          <div class="col-xs-12">
+            <span class="low-price">￥<%= product_price_tag(@product.low_price) %></span>
+            <span class="origin-price"><del>￥<%= product_price_tag(@product.origin_price) %></del></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 time-left">
+            <span id="timeLeft"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="extra-info">
+        <div class="item-line score">
+          <%= render_discount_score(@product) %>
+        </div>
+        <div class="item-line">
+          规格：<span class="text-muted"><%= @product.units %></span>
+        </div>   
+        <div class="item-line">
+          <span class="text-muted"><%= render_deliver_info(@product) %></span>
+        </div>
+        <div class="item-line">
+          <%= raw SiteConfig.deliver_intro %>
+        </div>
+        <div class="item-line">已售<span class="price-numeric"><%= @product.orders_count %></span>件</div>
+      </div>
+      
+      <div class="extra-summary">
+        <% if @product.note.present? %>
+          <div class="item-extra-info">
+            <h2>小贴士</h2>
+            <div class="text-muted"><%= raw @product.note %></div>
+          </div>
+        <% end %>
+  
+        <% if @photos.any? %>
+          <div class="item-extra-info">
+            <h2>商品简介</h2>
+            <% @photos.each do |photo| %>
+            <%= image_tag photo.image.url(:normal), class: "img-responsive" %>
+            <% end %>
+          </div>
+        <% end %>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  
+  <div class="bottom-buttons">
+    <div class="row">
+      <div class="col-xs-2">
+        <div class="button-container first">
+          <a href="<%= show_cart_path %>" class="show-cart"></a>
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <% if current_user %>
+        <div class="like-button">
+          <%= likeable_tag @product %>
+        </div>
+        <% end %>
+      </div>
+      <div class="col-xs-6">
+        <div class="button-container">
+          <a onclick="App.addToCart(this)" data-product-id="<%= @product.id %>" id="item-<%= @product.id %>" data-loading="0">加入购物车</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<% else %>
+
+<% content_for :sitemap do %>
+    <a href="<%= category_items_path(@product.type_id) %>" title="<%= @product.product_type.try(:name) %>"><%= @product.product_type.try(:name) %></a> &gt; <span class="current"><%= @product.title %></span>
+<% end %>
+
+<div class="product-container-box" id="product-<%= @product.id %>">
+  <h1 class="f18"><%= @product.title %></h1>
+  <div class="row">
+    <div class="col-sm-5">
+      <%= image_tag @product.image_url(:large), alt: @product.title, class: "img-responsive" %>
+    </div>
+    <div class="col-sm-7 product-detail">
+      <div class="item-line green f30 price-numeric">
+        ￥<%= product_price_tag(@product.low_price) %>
+      </div>
+      <div class="item-line">
+        <div class="pull-right green f16">
+          <span id="timeLeft"></span>
+        </div>
+        <span class="text-muted f16"><del>市场价￥<%= product_price_tag(@product.origin_price) %></del></span>
+      </div>
+      <div class="item-line subtitle">
+        <%= render_discount_score(@product) %>
+      </div>
+      <div class="item-line">
+        <span class="text-muted f16">规格：<%= @product.units %></span>
+      </div>   
+      <div class="item-line text-muted f14">
+        配送：<%= render_deliver_info(@product) %>
+      </div>
+      <% if SiteConfig.deliver_intro %>
+      <div class="item-line">
+        <%= raw SiteConfig.deliver_intro %>
+      </div>
+      <% end %>
+      
+      <div class="item-line text-muted f16">已售<span class="green price-numeric f24"><%= @product.orders_count %></span>件</div>
+      
+      <div class="clearfix">
+        <div class="pull-left">
+          <%= add_to_cart_tag @product, "btn btn-success" %>
+        </div>
+        <div style="margin-left: 160px;">
+          <% if current_user %>
+            <%= likeable_tag @product %>
+          <% end %>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  
+  <div class="product-info">
+    <% if @product.note.present? %>
+      <div class="product-note">
+        <h2 class="f16">小贴士</h2>
+        <div class="text-muted"><%= raw @product.note %></div>
+      </div>
+    <% end %>
+    
+    <% if @photos.any? %>
+    <div class="product-intro">
+      <h2 class="f16">商品简介</h2>
+      <% @photos.each do |photo| %>
+      <%= image_tag photo.image.url(:normal), class: "img-responsive" %>
+      <% end %>
+    </div>
+    <% end %>
+    
+  </div>
+  
+</div>
+
+<% end %>
+
+<% content_for :scripts do %>
+<script>
+
+$(function() {
+  
+  <%
+    @time = @product.discounted_at || @product.sale.try(:closed_at)
+  %>
+  
+  <% if @time %>
+  $("#timeLeft").countdown("<%= @time.strftime("%Y-%m-%d %H:%M:%S") %>")
+    .on('update.countdown', function(event) {
+      $(this).html(event.strftime('<span class="glyphicon glyphicon-time"></span>' + '&nbsp;&nbsp;剩余' + '%D天%H小时%M分%S秒'));
+    })
+    .on('finish.countdown', function(event) {
+      $el = $("#item-<%= @product.id %>");
+      $el.attr("disabled", true);
+      $el.prop("disabled", true);
+      <% if mobile? %>
+      $el.parent().css("background-color", "rgb(240, 173, 78)");
+      <% else %>
+      $el.attr("class", "btn btn-warning");
+      <% end %>
+      $el.text("活动已结束,不支持订购");
+      $(this).html('<span class="glyphicon glyphicon-time"></span>' + '&nbsp;&nbsp;剩余' + '00天00小时00分00秒');
+    });
+  <% end %>
+  
+
+});
+
+</script>
+<% end %>

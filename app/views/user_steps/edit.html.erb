@@ -1,0 +1,54 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "找回密码" %>
+  
+  <div class="container">
+    <div class="user-login-form">
+      <%= simple_form_for(@user, url: password_path, html: { class: '', method: :post, id: "new_user" },
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+
+          <%= f.input :password, label: false, placeholder: "请输入新密码", autocomplete: "off" %>
+          <%= f.input :password_confirmation, label: false, placeholder: "请再次输入新密码" %>
+          
+          <%= f.input :reset_password_token, as: :hidden %>
+          
+          <%= f.submit "下一步", class: "btn btn-success btn-block" %>
+          
+      <% end %>
+    </div>
+  </div>
+  
+<% else %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <%= render '/user_steps/step_info' %>
+      <%= simple_form_for(@user, url: password_path, html: { class: 'form-horizontal', method: :post },
+        wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <%= f.input :password, label: "新密码", autofocus: true, autocomplete: "off", input_html: { style: "width: 300px;"} %>
+          <%= f.input :password_confirmation, label: "确认新密码", input_html: { style: "width: 300px;"} %>
+          
+          <%= f.input :reset_password_token, as: :hidden %>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <%= f.submit "修改密码", class: "btn btn-success" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,11 @@
+<div class="row container-box">  
+  <div class="col-md-12">
+    <% if @products.any? %>
+    <% cache cache_key_for(@cache_prefix, @products) do %>
+      <%= render_grid_for @products, 4 %>
+    <% end %>
+    <% else %>
+      没有找到相关记录!
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<% if @pages.any? %>
+  <% cache(cache_key_for('pages', @pages)) do %>
+  <div class="sidebar-right-box">
+    <h2>水果贴士</h2>
+    <ul>
+      <% @pages.each_with_index do |page, index| %>
+        <% cache page do %>
+        <li><div class="item-line <%= index == @pages.size - 1 ? "last" : "" %>">
+          <%= link_to truncate(page.title, length: 20), page_path(page.slug), target: "_blank" %>
+        </div></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+<% end %>

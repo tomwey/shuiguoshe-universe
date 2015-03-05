@@ -1,0 +1,25 @@
+<%= simple_form_for([@product, @order], html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+  <%= render '/shared/error_messages', target: @order %>
+
+<%= f.input :quantity,as: :string, label: "购买数量 (单位:斤)", placeholder: "至少购买1斤", hint: "至少购买1斤", input_html: { style: "width:300px;",onkeyup:"App.checkValue(this)", onafterpaste:"App.checkValue" } %>
+
+<%= f.input :deliver_time, collection: SiteConfig.deliver_times.map { |s| [s,s] }, label: "配送时间", prompt: "--请选择配送时间--",input_html: { style: "width:300px;" } %>
+
+<%= f.input :deliver_address, collection: Apartment.opened.map { |a| [a.name, a.name] }, label: "配送至", prompt: "--请选择您所在的小区--",input_html: { style: "width:300px;" } %>
+<%= f.input :note, label: "备注信息", placeholder: "提醒注意的事项 (选填)",input_html: { style: "width:300px;" } %>
+
+<div class="form-group">
+  <div class="col-sm-offset-3 col-sm-10">
+    <%= f.submit "确认下单", class: "btn btn-success" %>
+  </div>
+</div>
+
+<% end %>
+
+

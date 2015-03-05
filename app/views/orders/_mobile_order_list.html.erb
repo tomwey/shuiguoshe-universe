@@ -1,0 +1,19 @@
+<% content_for :mobile_title do %>
+<%= @mobile_title %>
+<% end %>
+
+<%= render "layouts/mobile_navbar", left: "user", right: "home", title: "" %>
+
+<div class="container">
+  <div class="orders" id="mobile-orders">
+    <% if @orders.empty? %>
+    暂无订单
+    <% else %>
+    <% cache cache_key_for("mobile_#{@cache_prefix}", @orders) do %>
+      <% @orders.each do |order| %>
+        <%= render "orders/mobile_order", order: order %>
+      <% end %>
+    <% end %>
+    <% end %>
+  </div>
+</div>

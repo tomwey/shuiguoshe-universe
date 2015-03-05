@@ -1,0 +1,326 @@
+$nature-green: rgb(7,156,22);
+$medium-red: rgb(60,155,0);
+$light-gray: #777;
+$gray-medium-light: #eaeaea;
+
+@import "variables";
+
+.user-navbar {
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 10px 0 20px 0;
+}
+.user-box {
+  h2 {
+    font-size: 18px;
+    margin:0;
+    padding:0;
+    padding: 10px;
+    
+    color: $common-black;
+//    border-bottom: 2px solid $nature-green;
+    margin-bottom: 20px;
+    background-color: white;
+  }
+}
+
+.likes {
+  background-color: white;
+  padding: 20px;
+  .like-item {
+    padding: 10px 0;
+    a {
+      color: $common-black;
+      text-decoration: none;
+    }
+//    margin-: 20px;
+    border-bottom: 1px dashed #ccc;
+    &:last-child {
+      border: 0;
+    };
+  }
+}
+
+// 用户登录、注册
+.user-login-box {
+  background-color: rgb(251,248,240);
+  .user-login-form {
+    padding: 10px 50px;
+    h2 {
+      padding: 10px 0;
+      font-size: 18px;
+      border-bottom: 2px solid $nature-green;
+      margin-bottom: 20px;
+    }
+    
+    .reg-tip {
+      color:red;
+      font-size: 14px;
+      padding-left: 10px;
+    }
+    
+    .auth-code-container {
+      position: relative;
+      .get-auth-code {
+        position: absolute;
+        right: 110px;
+        top: 0;
+      }
+    }
+    
+    .captcha-code-container {
+      position: relative;
+      .captcha-container {
+        position: absolute;
+        right: 110px;
+        top: 0;
+        clear: both;
+        z-index: 10;
+        img {
+          float: left;
+          display: block;
+          width: 80px;
+          height: 30px;
+        }
+        a {
+          color: red;
+          display: block;
+          cursor: pointer;
+          width: 50px;
+          height: 30px;
+          line-height: 30px;
+          float: right;
+          text-decoration: underline;
+          margin-left: 5px;
+        }
+      }
+    }
+    
+  }
+  
+  .forget-password {
+    padding: 0 10px;
+    color: $nature-green;
+  }
+  
+  .user-reg-info {
+    padding-top: 40px;
+    height: 540px;
+    background-color: rgb(221,230,202);
+    text-align: center;
+    color: $nature-green;
+    h3 {
+      font-size: 20px;
+    }
+    p {
+      font-size: 18px;
+      
+    }
+    a {
+      margin-top: 30px;
+    }
+    
+  }
+  
+}
+
+// 用户主页侧边栏
+.slide-left {
+//  width: 140px;
+//  height: 300px;
+  border: 1px solid $gray-medium-light;
+  text-align: center;
+  h2 {
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid $gray-medium-light;
+    margin: 0;
+    padding: 15px 0;
+  }
+  li.last {
+    border-bottom: 1px solid $gray-medium-light;
+  }
+  
+  a {
+    color: black;
+    &:hover {
+      color: white;
+    };
+  }
+  a.user-home {
+    color: black;
+    &:hover {
+      color:black;
+      text-decoration: underline;
+    };
+  }
+}
+
+// 用户主页内容区
+.user-info {
+  margin: 0;
+  clear: both;
+  .user-intro {
+    margin-left: 20px;
+//    margin-top: -15px;
+    h3 {
+      color: $nature-green;
+    }
+  }
+  .user-points {
+    width: 200px;
+    margin-left: 350px;
+    h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+    p {
+      margin-top: 10px;
+      font-size: 16px;
+//      font-weight: bold;
+    }
+    padding-left: 60px;
+    border-left: 1px solid $gray-medium-light;
+    height: 120px;
+  }
+}
+
+#new_message, #new_invite, #edit_user, #edit_user_20 {
+  background-color: white;
+  padding: 20px 0 5px 0;
+}
+
+.user-today-orders {
+  clear: both;
+//  border: 1px solid $gray-medium-light;
+  margin-top: 40px;
+  h2 {
+    margin: 0;
+    padding: 0;
+    padding: 10px;
+    border: 1px solid rgb(221,221,221);
+    font-size: 16px;
+    color: $nature-green;
+    background-color: rgb(235,235,235);
+    margin-bottom: 10px;
+  }
+  
+}
+
+.user-side-right {
+//  background-color: white;
+//  padding: 10px;
+}
+
+.tab-head {
+  a {
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    &:hover {
+      color: white;
+    };
+  }
+}
+
+.tab-body {
+  margin-top: 20px;
+//  border: 1px solid $gray-medium-light;
+}
+
+// 用户积分
+.points-detail {
+  margin: 0;
+  .points-head {
+    padding-bottom: 10px;
+    font-size: 16px;
+  }
+  table {
+    border: 1px solid rgb(235,235,235);
+    thead {
+      background-color: rgb(241,241,241);
+    }
+    th,td {
+      text-align: center;
+    }
+  }
+}
+
+.user-layout {
+  padding: 15px 0;
+  background-color: white;
+}
+
+.slide-left {
+  border-bottom: none;
+  .list-group-item {
+    border: none;
+    border-radius: 0;
+    -webkit-botder-radius: 0;
+    &:last-child {
+      margin-bottom: -20px;
+      border-bottom: 1px solid $gray-medium-light;
+    };
+    
+  }
+  
+//  a.underline {
+//    border-bottom: 1px solid;
+////    background: red;
+//  }
+  
+  .list-group-item {
+    &:hover {
+      background-color: $nature-green;//rgb(60,155,0);
+    };
+  }
+  
+  a.active {
+    background-color: $nature-green;
+    &:hover {
+      background-color: $nature-green;
+    };
+    &:active {
+      background-color: $nature-green;
+    };
+  }
+}
+
+.nav-pills {
+  li {
+    background:red;
+    border: 0;
+    &:hover {
+      border: 0;
+    };
+  }
+}
+
+.footer2 {
+  text-align: center;
+  margin-top: 30px;
+  color: rgb(166,166,166);
+  a {
+    color: rgb(166,166,166);
+  }
+  small, small a {
+    text-align: center;
+    color: rgb(150,150,150);
+  }
+}
+
+.step-info{
+  margin-top: 20px;
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: $common-black;
+  span {
+    padding: 0 10px;
+    &.current {
+      color: $nature-green;
+    }
+  }
+
+}

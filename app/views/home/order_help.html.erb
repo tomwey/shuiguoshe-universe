@@ -1,0 +1,86 @@
+<% if mobile? %>
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "订购流程" %>
+<div class="container">
+  <div class="user-box">
+    <h2>订购流程</h2>
+    <section class="help-detail-section">
+      <div class="help-item">
+        <p>1、点击页面顶部右侧"注册", 进入注册页面；</p>
+        <%= image_tag 'help/01.png' %>
+      </div>
+    
+      <div class="help-item">
+        <p>2、填写账户名、密码等个人信息进行注册，点击"注册"，完成注册；</p>
+        <%= image_tag 'help/02.jpg' %>
+      </div>
+    
+      <div class="help-item">
+        <p>3、选择商品并加入购物车；</p>
+        <%= image_tag 'help/03.png', style: "width: 90%" %>
+      </div>
+    
+      <div class="help-item">
+        <p>4、购物车中再次确认调整需要购买的产品，然后提交订单；</p>
+        <%= image_tag 'help/04.png', style: "width: 90%" %>
+      </div>
+    
+      <div class="help-item">
+        <p>5、填写收货人信息；</p>
+        <%= image_tag 'help/05.jpg' %>
+      </div>
+    
+      <div class="help-item">
+        <p>6、备注并用积分抵扣现金，确认下单；（我们为货到付款，请签收时付款）</p>
+        <%= image_tag 'help/06.png', style: "width: 90%" %>
+      </div>
+    
+      <div class="help-item">
+        <p>7、下单完成后，页面自动跳转到"我的未完成订单"，你可以查看你的订单最新状态，也可以随时通过“我的订单”查看跟踪您的订单；</p>
+        <%= image_tag 'help/07.png' %>
+      </div>
+    
+    </section>
+  </div>
+</div>
+<% else %>
+<div class="user-box">
+  <h2>订购流程</h2>
+  <section class="help-detail-section">
+    <div class="help-item">
+      <p>1、点击页面顶部右侧"注册", 进入注册页面；</p>
+      <%= image_tag 'help/01.png' %>
+    </div>
+    
+    <div class="help-item">
+      <p>2、填写账户名、密码等个人信息进行注册，点击"注册"，完成注册；</p>
+      <%= image_tag 'help/02.jpg' %>
+    </div>
+    
+    <div class="help-item">
+      <p>3、选择商品并加入购物车；</p>
+      <%= image_tag 'help/03.png', style: "width: 90%" %>
+    </div>
+    
+    <div class="help-item">
+      <p>4、购物车中再次确认调整需要购买的产品，然后提交订单；</p>
+      <%= image_tag 'help/04.png', style: "width: 90%" %>
+    </div>
+    
+    <div class="help-item">
+      <p>5、填写收货人信息；</p>
+      <%= image_tag 'help/05.jpg' %>
+    </div>
+    
+    <div class="help-item">
+      <p>6、备注并用积分抵扣现金，确认下单；（我们为货到付款，请签收时付款）</p>
+      <%= image_tag 'help/06.png', style: "width: 90%" %>
+    </div>
+    
+    <div class="help-item">
+      <p>7、下单完成后，页面自动跳转到"我的未完成订单"，你可以查看你的订单最新状态，也可以随时通过“我的订单”查看跟踪您的订单；</p>
+      <%= image_tag 'help/07.png' %>
+    </div>
+    
+  </section>
+</div>
+<% end %>

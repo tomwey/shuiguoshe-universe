@@ -1,0 +1,12 @@
+<div class="alert alert-warning" role="alert">
+  <%= SiteConfig.cancel_order_tip %>
+</div>
+
+<div class="tab-head">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="<%= @current == 'user_orders' ? "active" : "" %>"><%= link_to "所有订单", orders_user_path %></li>
+    <li role="presentation" class="<%= @current == 'user_orders_incompleted' ? "active" : "" %>"><%= link_to "未完成(#{current_user.orders.normal.count})", incompleted_orders_user_path, id: "incompleted_orders_link" %></li>
+    <li role="presentation" class="<%= @current == 'user_orders_completed' ? "active" : "" %>"><%= link_to "已完成", completed_orders_user_path %></li>
+    <li role="presentation" class="<%= @current == 'user_orders_canceled' ? "active" : "" %>"><%= link_to "已取消", canceled_orders_user_path %></li>
+  </ul>
+</div>

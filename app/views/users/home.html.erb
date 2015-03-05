@@ -1,0 +1,129 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "我的水果社" %>
+
+<div class="user-info">
+  <p class="sign-out"><%= link_to "退出登录", destroy_user_session_path, method: :delete, class: "btn btn-xs btn-danger" %></p>
+  <%= link_to user_avatar_tag(current_user, :big), edit_user_registration_path %>
+  <div class="mobile"><%= current_user.hack_mobile %></div>
+  <div class="score">积分：<%= current_user.score %></div>
+</div>
+
+
+<div class="container">
+  <div class="order-info">
+    <div class="row order-states">
+      <div class="col-xs-4">
+        <a href="<%= incompleted_orders_user_path %>" class="order-state-link">
+          <div class="order-state">
+            <p><%= @incompleted_count %></p>
+            <p>待配送</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a href="<%= completed_orders_user_path %>" class="order-state-link">
+          <div class="order-state">
+            <p><%= @completed_count %></p>
+            <p>已完成</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-xs-4">
+        <a href="<%= canceled_orders_user_path %>" class="order-state-link">
+          <div class="order-state">
+            <p><%= @canceled_count %></p>
+            <p>已取消</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <div class="all-orders">
+      <div class="row">
+        <div class="col-xs-12">
+          <%= link_to "全部订单", orders_user_path, class: "cell" %>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="item-info">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "我的积分", points_user_path, class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "我的收藏", likes_user_path, class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "有话要说", new_message_path, class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+  </div>
+  
+  <div class="item-info">
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "基本资料", edit_user_registration_path, class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "修改密码", edit_user_registration_path(by: 'pwd'), class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-12">
+        <%= link_to "配送设置", edit_user_path, class: "cell" %>
+      </div>
+      <div class="col-xs-3">
+        <i class="arrow pull-right"></i>
+      </div>
+    </div>
+    
+  </div>
+  
+</div>
+
+<% else %>
+<%= render "users/user_info" %>
+
+<div class="alert alert-warning" role="alert" style="margin-top: 20px; margin-bottom:-20px;">
+  <%= SiteConfig.cancel_order_tip %>
+</div>
+
+<div class="user-today-orders">
+  <h2>
+    我的未完成订单
+  </h2>
+  <div class="order-list">
+    <%= render "/orders/order_list", cache_prefix: "user_#{current_user.mobile}_home_today_orders" %>
+  </div>
+</div>
+<% end %>

@@ -1,0 +1,21 @@
+<%= simple_form_for([:cpanel, @site_config], html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+    
+  <%= render '/shared/error_messages', target: @site_config %>
+
+  <%= f.input :key, label: "配置key" %>
+  <%= f.input :value, label: "配置值" %>
+  <%= f.input :description, label: "配置说明" %>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-10">
+      <%= f.submit "提交", class: "btn btn-primary" %>&emsp;<%= link_to '返回', cpanel_products_path, class: "btn btn-default" %>
+    </div>
+  </div>
+  
+<% end %>

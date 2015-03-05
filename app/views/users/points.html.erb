@@ -1,0 +1,66 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "我的积分" %>
+
+<div class="container">
+  <div class="points">
+    <div class="alert alert-warning" role="alert" style="margin-top: 20px;">
+      每100积分可以抵扣1.00元，但是积分不能全部用来抵扣一次购物。
+    </div>
+  
+    <h2 class="green">目前的积分为：<%= current_user.score %></h2>
+    
+    <h4>积分使用记录：</h4>
+    
+    <% @traces.each do |trace| %>
+      <div class="row">
+        <div class="col-xs-2">
+          <%= "#{trace.oper_type}#{trace.score}" %>
+        </div>
+        <div class="col-xs-5">
+          <%= trace.summary %>
+        </div>
+        <div class="col-xs-5">
+          <%= trace.created_at.strftime("%Y-%m-%d %H:%M:%S") %>
+        </div>
+      </div>
+    <% end %>
+    
+  </div>
+</div>
+
+
+<% else %>
+<div class="user-box">
+  <h2>我的积分</h2>
+  <div class="alert alert-warning" role="alert" style="margin-top: 20px;">
+    每100积分可以抵扣1.00元，但是积分不能全部用来抵扣一次购物。
+  </div>
+  <div class="points-detail">
+    <div class="points-head">目前的积分为：<%= current_user.score %></div>
+    <div class="points-body">
+      <table class="table common-table">
+        <tr class="table-head">
+          <th width="25%">交易记录</th>
+          <th width="25%">积分</th>
+          <th>备注</th>
+        </tr>
+        <% if @traces.empty? %>
+        <tr>
+          <td colspan="3" align="center">目前无交易记录!</td>
+        </tr>
+        <% else %>
+        <% @traces.each do |trace| %>
+        <tr>
+          <td width="25%"><%= trace.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+          <td width="25%"><%= trace.score %></td>
+          <td><%= trace.summary %></td>
+        </tr>
+        <% end %>
+        <% end %>
+      </table>
+    </div>
+    <div class="text-center"><%= will_paginate @traces, renderer: BootstrapPagination::Rails %></div>
+  </div>
+</div>
+<% end %>

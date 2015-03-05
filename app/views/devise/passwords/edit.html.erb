@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <h2>修改密码</h2>
+      <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class:'form-horizontal' },
+      wrapper: :horizontal_form,
+      wrapper_mappings: {
+        check_boxes: :horizontal_radio_and_checkboxes,
+        radio_buttons: :horizontal_radio_and_checkboxes,
+        file: :horizontal_file_input,
+        boolean: :horizontal_boolean
+      }) do |f| %>
+        <%= render "shared/error_messages", target: resource %>
+        <%= f.hidden_field :reset_password_token %>
+        <%= f.input :password, label: "新密码", autofocus: true, autocomplete: "off", input_html: { style: "width: 300px;"} %>
+        <%= f.input :password_confirmation, label: "确认新密码", input_html: { style: "width: 300px;"} %>
+
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-9">
+            <%= f.submit "修改我的密码", class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+

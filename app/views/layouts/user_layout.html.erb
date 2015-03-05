@@ -1,0 +1,44 @@
+<% content_for :content do %>
+<div class="row container-box">
+  <div class="col-sm-2">
+    <div class="slide-left">
+        <h2><%= link_to "我的账户", home_user_path, class: "user-home" %></h2>
+        <div class="list-group">
+          <% 
+          @actions = %w(user_orders user_orders_incompleted user_orders_completed user_orders_canceled user_show_order_detail)
+           %>
+          <a href="<%= orders_user_path %>" class="list-group-item <%= @actions.include?(@current) ? "active" : "" %>">
+            我的订单
+          </a>
+          <a href="<%= points_user_path %>" class="list-group-item <%= @current == 'user_points' ? "active" : "" %>">
+            我的积分
+          </a>
+          <a href="<%= likes_user_path %>" class="list-group-item <%= @current == 'user_likes' ? "active" : "" %>">
+            我的收藏
+          </a>
+          <a href="<%= new_message_path %>" class="list-group-item <%= @current == 'user_message_new' ? "active" : "" %>">
+            我有话说
+          </a>
+        </div>
+        <div class="list-group">
+          <a href="<%= edit_user_registration_path %>" class="list-group-item <%= @current == 'user_edit_profile' ? "active" : "" %>">
+            基本资料
+          </a>
+          <a href="<%= edit_user_registration_path(by:'pwd') %>" class="list-group-item <%= @current == 'user_edit_pwd' ? "active" : "" %>">
+            修改密码
+          </a>
+          <a href="<%= edit_user_path %>" class="list-group-item <%= @current == 'user_edit_other' ? "active" : "" %>">
+            配送设置
+          </a>
+        </div>
+        
+    </div>
+  </div>
+  <div class="col-sm-10 user-side-right">
+    <%= yield %>
+  </div>
+</div>
+
+<% end %>
+
+<%= render :template => 'layouts/application' %>

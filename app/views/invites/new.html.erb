@@ -1,0 +1,34 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "邀请朋友" %>
+
+<div class="container">
+  <div class="alert alert-warning" role="alert" style="margin-top: 20px;" id="user-alert-warning">
+    成功邀请一位未注册朋友，注册为我们的会员，然后您朋友激活了邀请，那么您和您的朋友都将获得<%= SiteConfig.invite_score.to_i %>积分，可以抵扣<%= SiteConfig.invite_score.to_i / 100 %>元。
+  </div>
+  
+  <%= simple_form_for(@invite, html: { class: "" },
+          wrapper_mappings: {
+            check_boxes: :horizontal_radio_and_checkboxes,
+            radio_buttons: :horizontal_radio_and_checkboxes,
+            file: :horizontal_file_input,
+            boolean: :horizontal_boolean
+          }) do |f| %>
+
+      <%= f.input :invitee_mobile, label: false, placeholder:"请输入您朋友的手机号" %>
+    
+      <button type="submit" class="btn btn-success btn-block" data-disable_with="正在提交...">开始邀请</button>
+    
+  <% end %>
+  
+</div>
+
+<% else %>
+<div class="user-box">
+  <h2>邀请朋友</h2>
+  <div class="alert alert-warning" role="alert" style="margin-top: 20px;" id="user-alert-warning">
+    成功邀请一位未注册朋友，注册为我们的会员，然后您朋友激活了邀请，那么您和您的朋友都将获得<%= SiteConfig.invite_score.to_i %>积分，可以抵扣<%= SiteConfig.invite_score.to_i / 100 %>元。
+  </div>
+  <%= render 'form' %>
+</div>
+<% end %>

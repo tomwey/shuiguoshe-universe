@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="vertical-center">
+        <p>社区水果预订平台</p>
+      </div>
+    </div>
+    
+    <%= form_tag search_products_path, method: 'get', class: "form-inline" do %>
+    <%= text_field_tag :q, params[:q], class: "form-control", placeholder: "请输入商品名称或商品描述", style: "width: 70%" %>
+    <%= hidden_field_tag :type_id, params[:type_id] if params[:type_id].present? %>
+    <button type="submit" class="btn btn-sm btn-success">搜索</button>
+    <% end %>
+  
+    <div class="col-md-6">
+      <a class="logo" href="/" style="display:block; margin: 0 auto; height: auto; padding: 20px 0;"><%= image_tag 'logo2.png',alt: "水果社" %></a>
+    </div>
+  
+    <div class="col-md-2">
+      <div class="pull-right order-btn-box">
+        <div class="vertical-center">
+          <div class="cart">购物车0件</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>

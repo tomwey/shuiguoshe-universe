@@ -1,0 +1,27 @@
+<table class="table common-table">
+  <tr class="table-head">
+    <th>商品名称</th>
+    <th>规格</th>
+    <th>单价（元）</th>
+    <th>数量</th>
+    <th>总价（元）</th>
+  </tr>
+  <% if @cart.line_items_count == 0 %>
+    <tr>
+      <td colspan="5">没有记录!</td>
+    </tr>
+  <% else %>
+  <% @cart.line_items.each do |line_item| %>
+    <tr id="order_line_item_<%= line_item.id %>">
+      <td width="40%" class="item-title">
+        <%= link_to image_tag(line_item.product.image.url(:small)), product_path(line_item.product), title: line_item.product.title, target: "_blank" %>
+        <span class="product-title"><%= link_to line_item.product.title, product_path(line_item.product), title: line_item.product.title, target: "_blank" %></span>
+      </td>
+      <td width="10%"><%= line_item.product.units %></td>
+      <td width="10%"><%= product_price_tag(line_item.product.low_price) %></td>
+      <td width="15%"><%= line_item.quantity %></td>
+      <td width="10%"><%= product_price_tag(line_item.total_price) %></td>
+    </tr>
+    <% end %>
+  <% end %>
+</table>

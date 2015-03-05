@@ -1,0 +1,44 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">广告列表</h3>
+    
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>广告图片</th>
+          <th>广告链接</th>
+          <th>广告标题</th>
+          <th>广告子标题</th>
+          <th>广告简介</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @banners.each do |banner| %>
+          <tr>
+            <td><%= banner.id %></td>
+            <td><%= render_banner_icon(banner) %></td>
+            <td><%= banner.url %></td>
+            <td><%= banner.title %></td>
+            <td><%= banner.subtitle %></td>
+            <td><%= banner.intro %></td>
+            <td>
+              <%= link_to '编辑', edit_cpanel_banner_path(banner), class: "btn btn-xs btn-default" %>
+              <% if current_user.super_manager? %>
+              <%= link_to '删除', [:cpanel, banner], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+</div>
+
+<%= link_to '新建Banner', new_cpanel_banner_path, class: "btn btn-primary" %>
+

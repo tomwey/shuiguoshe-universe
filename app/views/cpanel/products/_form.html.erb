@@ -1,0 +1,58 @@
+<%= simple_form_for([:cpanel, @product], html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+
+  <div class="col-md-6 col-md-offset-3">
+    <%= f.input :type_id, collection: ProductType.all.map { |t| [t.name, t.id] }, prompt: "--请选择产品类型--", label: "产品类别" %>
+
+    <%= f.input :title, label: "产品标题" %>
+    
+    <%- if @product.image.small %>
+      <div class="col-sm-10 col-sm-offset-3">
+        <%= render_product_icon(@product) %>
+      </div>
+    <%- end %>
+    <%= f.input :image, label: "产品图片" %>
+    <%= f.hidden_field :image_cache %>
+    
+    <%= f.input :low_price, label: "最低价" %>
+    <%= f.input :origin_price, label: "市场价" %>
+    
+    <%= f.input :units, label: "计量单位" %>
+    
+    <%= f.input :note, label: "温馨提示" %>
+    <%= f.input :discount_score, label: "赠送积分", placeholder: '300' %>
+    
+    <%= f.input :sort, label: "产品显示顺序", hint: "值越小排序越靠前" %>
+    
+    <%= f.simple_fields_for :photos do |b|  %>
+      <%= render "/cpanel/photos/form_fields", :f => b %>
+    <% end %>
+    
+    <div class="photo-fields">
+      <%= link_to_add_fields "添加产品简介图片", f, :photos %>
+    </div>
+    
+    <%= f.input :stock_count, label: "库存" %>
+    
+    <%= f.input :sale_id, collection: Sale.all.map { |s| [s.title, s.id] }, prompt: "--请选择卖场--", label: "所属卖场" %>
+    <%= f.input :subtitle, label: "产品子标题" %>
+    
+    <%= f.input :delivered_at, as: :string, label: "配送时间", placeholder: '2014-01-01 00:00:00 ( 可以不设置 )' %>
+    <%= f.input :is_discount, label: "是否属于特惠预订产品", input_html: { onchange: "javascript: $('#discounted_at_area').toggle();" } %>
+    <div id="discounted_at_area" style="display: <%= @product.is_discount ? "" : "none" %>">
+      <%= f.input :discounted_at, as: :string, placeholder: '2014-01-01 00:00:00', label: "活动结束时间", required: true, input_html: { value: "#{@product.discounted_at ? @product.discounted_at.strftime("%Y-%m-%d %H:%M:%S") : "" }" } %>
+    </div>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <%= f.submit "提交", class: "btn btn-primary" %>&emsp;<%= link_to '返回', cpanel_products_path, class: "btn btn-default" %>
+      </div>
+    </div>
+  </div>
+
+<% end %>

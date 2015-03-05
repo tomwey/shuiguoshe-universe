@@ -1,0 +1,22 @@
+<% cache [line_item, line_item.product_updated_at] do %>
+<tr id="cart_1_line_item_<%= line_item.id %>">
+  <td width="40%">
+    <div class="item-title clearfix">
+      <div class="pull-left">
+        <%= link_to image_tag(line_item.product.image.url(:small)), product_path(line_item.product), title: line_item.product.title, target: "_blank" %>
+      </div>
+      <div class="pull-left extra-info">
+        <div class="product-title"><%= link_to line_item.product.title, product_path(line_item.product), title: line_item.product.title, target: "_blank" %></div>
+        <div class="green"><%= render_discount_score(line_item.product) %></div>
+      </div>
+    </div>
+    
+    
+  </td>
+  <td width="10%"><%= line_item.product.units %></td>
+  <td width="10%"><%= product_price_tag(line_item.product.low_price) %></td>
+  <td width="15%"><%= render_item_quantity(line_item) %></td>
+  <td width="10%"><%= product_price_tag(line_item.total_price) %></td>
+  <td width="5%"><a onclick="App.deleteItem(this)" data-id="<%= line_item.id %>" id="cart_1_line_item_<%= line_item.id %>_link" data-loading="0" data-type="1" class="btn btn-sm btn-danger">删除</a></td>
+</tr>
+<% end %>

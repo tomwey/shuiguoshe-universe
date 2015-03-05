@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-md-9">
+    <div class="box">
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
+        <fieldset>
+          <legend>登录</legend>
+          <div class="form-group">
+            <%= f.label :login, "登录", class: "col-sm-2 control-label" %>
+            <div class="col-sm-9">
+              <%= f.text_field :login, class: "form-control", placeholder: '手机或邮箱', autofocus:true %>
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <%= f.label :password, "密码", class: "col-sm-2 control-label" %>
+            <div class="col-sm-9">
+              <%= f.password_field :password, class: "form-control", autocomplete: "off" %>
+            </div>
+          </div>
+
+          <% if devise_mapping.rememberable? -%>
+          <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-9">
+                <div class="checkbox">
+                  <label>
+                    <%= f.check_box :remember_me %> 记住我
+                  </label>
+                </div>
+              </div>
+          </div>
+          <% end -%>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-9">
+              <%= f.submit "登录", class: "btn btn-primary" %>
+            </div>
+          </div>
+        </fieldset>
+        
+      <% end %>
+    </div>
+
+  </div>
+  
+  <div class="col-md-3">
+    <div class="box">
+      <%= render "devise/shared/links" %>
+    </div>
+    
+  </div>
+</div>
+
+
+

@@ -1,0 +1,57 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">产品列表</h3>
+    
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>产品图片</th>
+          <th>标题</th>
+          <th>规格</th>
+          <th>水果社价</th>
+          <th>市场价</th>
+          <th>库存</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @products.each do |product| %>
+          <tr>
+            <td><%= link_to product.id, [:cpanel, product] %></td>
+            <td><%= render_product_icon(product) %></td>
+            <td><%= product.title %></td>
+            <td><%= product.units %></td>
+            <td><%= product_price_tag(product.low_price) %></td>
+            <td><%= product_price_tag(product.origin_price) %></td>
+            <td><%= product.stock_count %></td>
+            <td>
+              <% if current_user.admin? %>
+              <%= state_link_to state: product.suggested?,
+                                yes_uri: "/cpanel/products/#{product.id}/unsuggest", 
+                                yes_text: "取消推荐",
+                                no_uri: "/cpanel/products/#{product.id}/suggest",
+                                no_text: "推荐" %>
+              <%= state_link_to state: product.on_sale,
+                                yes_uri: "/cpanel/products/#{product.id}/downshelf", 
+                                yes_text: "下架",
+                                no_uri: "/cpanel/products/#{product.id}/upshelf",
+                                no_text: "上架" %>
+              <% end %>
+              <%= link_to '编辑', edit_cpanel_product_path(product), class: "btn btn-xs btn-default" %>
+              <% if current_user.super_manager? %>
+              <%= link_to '删除', [:cpanel, product], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="center"><%= will_paginate @products, renderer: BootstrapPagination::Rails %></div>
+  
+</div>

@@ -1,0 +1,18 @@
+<%= simple_form_for(@message, html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+
+    <%= f.input :title, label: "留言标题", input_html: { style: "width:300px;" }, placeholder:"标题" %>
+    <%= f.input :body, label: "留言内容", input_html: { style: "width: 300px;height:200px;" }, placeholder:"说点什么" %>
+    
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <button type="submit" class="btn btn-success" data-disable_with="正在提交...">提交</button>
+      </div>
+    </div>
+    
+<% end %>

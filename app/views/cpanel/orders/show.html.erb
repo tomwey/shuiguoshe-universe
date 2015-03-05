@@ -1,0 +1,29 @@
+<div class="user-box order-sitemap">
+  <div class="order-detail">
+    <table class="table common-table">
+      <tr class="table-head">
+        <th>商品名称</th>
+        <th>规格</th>
+        <th>单价（元）</th>
+        <th>数量</th>
+        <th>总价（元）</th>
+      </tr>
+      <% @order.line_items.each do |line_item| %>
+      <tr>
+        <td width="40%" class="item-title">
+          <%= link_to image_tag(line_item.product.image.url(:small)), product_path(line_item.product), title: line_item.product.title, target: "_blank" %>
+          <span class="product-title"><%= link_to line_item.product.title, product_path(line_item.product), style:"color:rgb(50,50,50)", title: line_item.product.title, target: "_blank" %></span>
+        </td>
+        <td width="10%"><%= line_item.product.units %></td>
+        <td width="10%"><%= product_price_tag(line_item.product.low_price) %></td>
+        <td width="15%"><%= line_item.quantity %></td>
+        <td width="10%"><%= product_price_tag(line_item.total_price) %></td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+
+  <div style="text-align:right">
+    <%= link_to "返回", :back, class: "btn btn-success", style: "color: white" %>
+  </div>
+</div>

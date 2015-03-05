@@ -1,0 +1,7 @@
+<% cache ["cart2_#{current_user.try(:id)}_line_items", cart.my_cache_key] do %>
+<table class="cart-table">
+  <% cart.line_items.each do |item| %>
+  <%= render 'carts/line_item', item: item %>
+  <% end %>
+</table>
+<% end %>

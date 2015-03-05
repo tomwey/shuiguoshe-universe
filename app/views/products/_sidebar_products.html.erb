@@ -1,0 +1,28 @@
+<% if products.any? %>
+<% cache cache_key_for("products_#{cache_prefix}", products) do %>
+<div class="sidebar-box">
+  <h2><%= head_caption %></h2>
+  <div class="products sidebar-items">
+    <% products.each do |product| %>
+    <% cache product do %>
+    <div class="product sidebar-item">
+      <div class="row">
+        <div class="col-xs-6">
+          <%= image_tag product.image.url(:thumb), style:"width: 108px; height: 90px;" %>
+        </div>
+        <div class="col-xs-6">
+          <h6 class="f14"><%= product.title %></h6>
+          <div><span class="green f14"><%= product.low_price %>&nbsp;元/斤</span><del class="text-muted f13"><%= product.origin_price %>&nbsp;元/斤</del></div>
+          <div style="padding-top: 5px;">
+            <%= link_to "立即预订", new_product_order_path(product), 
+              class: "btn btn-success btn-sm" %>
+          </div>
+        </div>
+      </div>     
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+</div>
+<% end %>
+<% end %>

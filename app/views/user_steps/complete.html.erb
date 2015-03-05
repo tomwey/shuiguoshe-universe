@@ -1,0 +1,24 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "找回密码" %>
+  
+  <div class="container">
+    <div class="user-login-form">
+      <div style="padding: 20px; text-align:center" class="green"><i class="glyphicon glyphicon-ok"></i> 密码重置成功
+        <%= link_to "去登录", new_user_session_path, class: "btn btn-warning" %>
+      </div>
+    </div>
+  </div>
+  
+<% else %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <%= render '/user_steps/step_info' %>
+      <div style="padding: 20px; text-align:center" class="green"><i class="glyphicon glyphicon-ok"></i> 密码重置成功
+        <%= link_to "去登录", new_user_session_path, class: "btn btn-warning" %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

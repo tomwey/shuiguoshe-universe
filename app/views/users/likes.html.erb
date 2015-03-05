@@ -1,0 +1,51 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "我的收藏" %>
+
+<div class="container">
+  <div class="likes">    
+    
+    <% if @likes.empty? %>
+    <div style="text-align: center">
+      还未收藏过东西哦！
+    </div>
+    <% else %>
+    <div class="likes">
+      <% @likes.each do |item| %>
+      <div class="like-item clearfix">
+        <div class="pull-left"><%= link_to render_product_icon(item.likeable), item.likeable, target: "_blank" %></div>
+        <div style="margin-left: 70px">
+          <%= link_to item.likeable.title, item.likeable, target: "_blank" %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <% end %>
+    
+  </div>
+</div>
+
+
+<% else %>
+<div class="user-box">
+  <h2>我的收藏</h2>
+  
+  <% if @likes.empty? %>
+  <div style="text-align: center">
+    还未收藏过东西哦！
+  </div>
+  <% else %>
+  <div class="likes">
+    <% @likes.each do |item| %>
+    <div class="like-item clearfix">
+      <div class="pull-left"><%= link_to render_product_icon(item.likeable), item.likeable, target: "_blank" %></div>
+      <div style="margin-left: 70px">
+        <%= link_to item.likeable.title, item.likeable, target: "_blank" %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <% end %>
+  
+</div>
+<% end %>

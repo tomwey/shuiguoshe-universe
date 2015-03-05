@@ -1,0 +1,28 @@
+<% cache(["user_#{current_user.mobile}", order, @current]) do %>
+<tr class="order-info" id="item-row-info-<%= order.id %>">
+  <td colspan="8" style="text-align:left;">
+    订单号：<%= order.order_no %>
+  </td>
+</tr>
+<tr id="item-row-<%= order.id %>">
+  <td>
+    <%= link_to "查看订单下的商品", order_path(order, tab: @tag), class: "order-detail-link" %>
+    <% if order.total_discount_score > 0 and not order.state?(:canceled) and not order.state?(:completed) %>
+    <div class="discount-score-intro">该订单完成后，赠送<%= order.total_discount_score %>积分</div>
+    <% end %>
+  </td>
+  <td>￥<%= product_price_tag(order.total_price) %></td>
+  <td>-￥<%= product_price_tag(order.discount_price) %></td>
+  <td><%= order.user_mobile %></td>
+  <td><%= order.user_apartment_name %></td>
+  <td><%= order.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+  <td><%= render_order_state(order) %></td>
+  <td>
+    <% if owner?(order) %>
+      <% if can_cancel?(order) %>
+        <a onclick="App.cancelOrder(this)" data-remote="true" id="item-row-<%= order.id %>-td" data-current="<%= @current %>" data-loading='0' data-id="<%= order.id %>" class="btn btn-danger btn-sm">取消订单</a>
+      <% end %>
+    <% end %>
+  </td>
+</tr>
+<% end %>

@@ -1,0 +1,23 @@
+<table class="table common-table">
+  <tr class="table-head">
+    <th>订单信息</th>
+    <th>实付(元)</th>
+    <th>抵扣(元)</th>
+    <th>收货人手机</th>
+    <th>收货人小区</th>
+    <th>下单日期</th>
+    <th>订单状态</th>
+    <th>操作</th>
+  </tr>
+  <% if @orders.empty? %>
+    <tr>
+      <td colspan="8">
+        <div class="text-center">没有记录!</div>
+      </td>
+    </tr>
+  <% else %>
+    <% @orders.each do |order| %>
+    <%= render "orders/order_detail", order: order %>
+    <% end %>
+  <% end %>
+</table>

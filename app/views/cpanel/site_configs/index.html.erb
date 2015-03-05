@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">配置列表</h3>
+  </div>
+  
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>配置key</th>
+          <th>配置值</th>
+          <th>说明</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @site_configs.each do |site_config| %>
+          <tr>
+            <td><%= site_config.id %></td>
+            <td><%= site_config.key %></td>
+            <td><%= site_config.value %></td>
+            <td><%= site_config.description %></td>
+            <td>
+              <% if current_user.super_manager? %>
+              <%= link_to '编辑', edit_cpanel_site_config_path(site_config), class: "btn btn-xs btn-default" %>
+              <%= link_to '删除', [:cpanel, site_config], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% if current_user.super_manager? %>
+<%= link_to '创建配置', new_cpanel_site_config_path, class: "btn btn-primary" %>
+<% end %>

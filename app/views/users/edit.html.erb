@@ -1,0 +1,50 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "配送设置" %>
+
+<div class="container">
+  <div class="user-login-form">
+    <%= simple_form_for(@user, html: { method: :put, class: '' },
+      wrapper_mappings: {
+        check_boxes: :horizontal_radio_and_checkboxes,
+        radio_buttons: :horizontal_radio_and_checkboxes,
+        file: :horizontal_file_input,
+        boolean: :horizontal_boolean
+      }) do |f| %>
+  
+      <%= render 'shared/error_messages', target: @user %>
+    
+        <%= f.input :apartment_id, collection: Apartment.opened.map { |a| ["#{a.name}（#{a.address}）", a.id] }, label: "配送小区", prompt: "--请选择您所在的小区--" %>
+      
+        <%= f.submit "修改", class: "btn btn-success btn-block", disable_with:'保存中...' %>
+  
+    <% end %>
+  </div>
+
+</div>
+
+<% else %>
+<div class="user-box">
+  <h2>配送设置</h2>
+  <%= simple_form_for(@user, html: { method: :put, class: 'form-horizontal' },
+    wrapper: :horizontal_form,
+    wrapper_mappings: {
+      check_boxes: :horizontal_radio_and_checkboxes,
+      radio_buttons: :horizontal_radio_and_checkboxes,
+      file: :horizontal_file_input,
+      boolean: :horizontal_boolean
+    }) do |f| %>
+  
+    <%= render 'shared/error_messages', target: @user %>
+    
+      <%= f.input :apartment_id, collection: Apartment.opened.map { |a| ["#{a.name}（#{a.address}）", a.id] }, label: "配送小区", prompt: "--请选择您所在的小区--", input_html: { style: "width: 300px;" } %>
+      
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+          <%= f.submit "修改", class: "btn btn-success", disable_with:'保存中...' %>
+        </div>
+      </div>
+  
+  <% end %>
+</div>
+<% end %>

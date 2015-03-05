@@ -1,0 +1,9 @@
+<div class="row container-box">  
+  <div class="col-md-12">
+    <% cache cache_key_for('apartments', @apartments) do %>
+    <%= render_grid_for @apartments, 4 %>
+    <% end %>
+  </div>
+</div>
+
+

@@ -1,0 +1,51 @@
+/*
+ *= require redactor-rails
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body {
+  padding-top: 60px;
+  padding-bottom: 50px;
+  background-color: white;
+}
+
+.photo-fields {
+  margin: 20px 0;
+  margin-left: 140px;
+  
+}
+
+.photo-form-fields {
+  border: 1px dashed #ccc;
+//  border-top: none;
+  padding-top: 20px;
+//  &:first-child {
+//    border-top: 1px dashed #ccc;
+//    background:red;
+//  }
+}
+
+.orders {
+  .table {
+    border: 0;
+    tr {
+      border-bottom: 1px dashed #ccc;
+      &:last-child {
+        border: 0;
+      };
+    }
+    td {
+      border: 0;
+    }
+    
+  }
+}
+
+.order-operation {
+  text-align: right;
+  > .btn {
+    margin-left: 20px;
+  }
+}

@@ -1,0 +1,36 @@
+<div class="container" id="my-cart">
+  <div class="mobile-cart-container">
+    <% if cart.line_items_count == 0 %>
+      <div class="empty-cart">
+        <i class="green glyphicon glyphicon-shopping-cart" style="font-size:30px;"></i>
+          购物车内暂时没有商品，您可以<a href="/" class="green">去首页</a>挑选喜欢的商品
+      </div>
+    <% else %>
+      <% cache ["cart1_#{current_user.try(:id)}_line_items", cart.my_cache_key] do %>
+        <table class="table">
+          <% cart.line_items.each do |item| %>
+            <%= render 'line_items/line_item_mobile', line_item: item %>
+          <% end %>
+        </table>
+      <% end %>
+    <% end %>
+  
+    <% if cart.line_items_count > 0 %>
+    <div class="bottom-buttons">
+      <div class="row">
+        <div class="col-xs-8">
+          <div class="cart-total-price button-container first">
+            总计（不含运费）：<span class="green">¥</span><span class="green numeric" id="cart_1_total_price"><%= product_price_tag(cart.total_price) %></span>
+          </div>
+        </div>
+        <div class="col-xs-4">
+          <div class="button-container">
+            <a href="<%= checkout_path %>">去结算(<span id="cart_2_total_items" data-cart-total="<%= cart.line_items_count %>"><%= cart.line_items_count %></span>)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  
+</div>

@@ -1,0 +1,50 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "激活邀请" %>
+
+<div class="container">
+  <div class="alert alert-warning" role="alert" style="margin-top: 20px;" id="user-alert-warning">
+    成功激活别人对您的邀请，那么您和您的朋友都将获得<%= SiteConfig.invite_score.to_i %>积分，可以抵扣<%= SiteConfig.invite_score.to_i / 100 %>元。
+  </div>
+  
+  <%= simple_form_for(@invite, url: active_code_invite_path, html: { class: "", method: :patch },
+          wrapper_mappings: {
+            check_boxes: :horizontal_radio_and_checkboxes,
+            radio_buttons: :horizontal_radio_and_checkboxes,
+            file: :horizontal_file_input,
+            boolean: :horizontal_boolean
+          }) do |f| %>
+
+      <%= f.input :code, label: false, placeholder:"请输入6位激活码" %>
+    
+      <button type="submit" class="btn btn-success btn-block" data-disable_with="正在提交...">激活</button>
+    
+  <% end %>
+  
+</div>
+
+<% else %>
+<div class="user-box">
+  <h2>激活邀请</h2>
+  <div class="alert alert-warning" role="alert" style="margin-top: 20px;" id="user-alert-warning">
+    成功激活别人对您的邀请，那么您和您的朋友都将获得<%= SiteConfig.invite_score.to_i %>积分，可以抵扣<%= SiteConfig.invite_score.to_i / 100 %>元。
+  </div>
+  <%= simple_form_for(@invite, url: active_code_invite_path, html: { class: "form-horizontal", method: :patch },wrapper: :horizontal_form,
+          wrapper_mappings: {
+            check_boxes: :horizontal_radio_and_checkboxes,
+            radio_buttons: :horizontal_radio_and_checkboxes,
+            file: :horizontal_file_input,
+            boolean: :horizontal_boolean
+          }) do |f| %>
+
+      <%= f.input :code, label: "激活码", input_html: { style: "width:400px;" }, placeholder:"请输入6位激活码" %>
+    
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-10">
+          <button type="submit" class="btn btn-success" data-disable_with="正在提交...">激活</button>
+        </div>
+      </div>
+    
+  <% end %>
+</div>
+<% end %>

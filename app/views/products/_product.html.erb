@@ -1,0 +1,30 @@
+<% cache("#{product.id}_#{product.updated_at.strftime("%Y%m%d%H%M%S")}_#{product.orders_count}_#{controller_name}") do %>
+<div class="product" onmouseover="$(this).find('#cart-btn-<%= product.id %>').show();" onmouseout="$(this).find('#cart-btn-<%= product.id %>').hide();">
+  <div class="col-md-<%= controller_name == "home" ? 4 : 3 %>" id="product-<%= product.id %>">
+    <div class="thumbnail">
+      <a href="<%= product_path(product) %>" class="item-link" target="<%= mobile? ? "" : "_blank" %>" title="<%= product.title %>">
+        <%= image_tag product.image.thumb, alt: product.title, class: "img-responsive" %>
+        <div class="caption">
+          <h6 class="name"><%= product.title %></h6>
+          <%= render_product_subtitle(product) %>
+          <!--div class="item-units"><%= product.units %></div-->
+          <div class="price">
+            <span class="green">￥<span class="numeric"><%= number_with_precision(product.low_price, precision: 2) %></span></span>
+            <del class="text-muted">￥<%= number_with_precision(product.origin_price, precision: 2) %></del>
+            <span class="item-units">（<%= product.units %>）</span>
+          </div>
+          <% if product.is_discount and product.discounted_at > Time.now %>
+          <div class="countdown" data-id="<%= product.id %>" data-countdown="<%= product.discounted_at.strftime("%Y-%m-%d %H:%M:%S") %>"></div>
+          <% end %>
+          <div class="price-extra">
+            <div class="pull-right" style="display:none" id="cart-btn-<%= product.id %>">
+              <%= add_to_cart_tag product %>
+            </div>
+            <span class="purchased">已售<%= product.orders_count %>件</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div> 
+</div>
+<% end %>

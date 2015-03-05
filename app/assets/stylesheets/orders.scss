@@ -1,0 +1,135 @@
+@import "variables";
+
+.orders {
+  padding:0;
+  .common-table {
+    background-color: white;
+    tr.order-info {
+      background-color: rgb(248,248,248);
+    }
+    td {
+      vertical-align: middle;
+      font-size: 14px;
+    }
+    .order-detail-link {
+      color: rgb(99,185,76);
+      text-decoration:underline;
+//      &:hover {
+//        color: $nature-green;
+//      };
+    }
+    .discount-score-intro {
+      color: rgb(50,50,50);
+      font-size: 12px;
+    }
+  }
+}
+
+.order-detail {
+  .common-table {
+    background-color: white;
+    .product-info {
+      margin-left: 70px;
+      .product-score {
+        font-size: 13px;
+      }
+    }
+    td {
+      vertical-align: top;
+      text-align: center;
+    }
+    td.item-title {
+      text-align: left;
+    }
+  }
+}
+
+.order-btn-box{
+  padding-top: 10px;
+  .cart-result {
+    font-size: 16px;
+  }
+}
+
+#new_order {
+  padding-bottom: 20px;
+}
+
+.order-sitemap {
+  h2 {
+    font-size: 14px;
+    font-weight: normal;
+  }
+  a {
+    color: $common-black;
+  }
+}
+
+.order-info-container {
+  border: 1px solid rgb(213,213,213);
+  background-color: white;
+  .common-table {
+    background-color: white;
+    td {
+      vertical-align: middle;
+    }
+  }
+  h3 {
+    margin: 0;
+    padding: 10px 20px;
+    background-color: rgb(240,240,240);
+    border-bottom: 1px solid rgb(213,213,213);
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .order-item-info {
+    h4 {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0;
+      margin-bottom: 10px;
+    }
+    padding: 20px 20px;
+    border-bottom: 1px solid rgb(213,213,213);
+    &:last-child {
+      border: 0;
+    };
+    .product-title {
+      a {
+        color: rgb(50,50,50);
+      }
+    }
+  }
+  .order-footer {
+    text-align: right;
+    padding: 10px 20px;
+    background-color: rgb(240,240,240);
+  }
+}
+
+.quantity-ctrl {
+  display: inline-block;
+  border: 1px solid rgb(213,213,213);
+  .quantity {
+    padding: 3px 15px;
+  }
+  .disabled {
+    background-color: rgb(235,235,235);
+  }
+  .reduce, .increase {
+    display: inline-block;
+    width: 26px;
+    padding: 3px 0;
+    color: rgb(50,50,50);
+    &:hover {
+      text-decoration: none;
+      cursor: pointer;
+    };
+  }
+  .reduce {
+    border-right: 1px solid rgb(213,213,213);
+  }
+  .increase {
+    border-left: 1px solid rgb(213,213,213);
+  }
+}

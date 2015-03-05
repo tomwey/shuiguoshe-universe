@@ -1,0 +1,64 @@
+<div class="row">
+  
+  <div class="col-md-12 col-xs-12">
+    <% if @today_orders.any? %>
+    <div class="page-head">
+      <h2 style="font-size: 18px;">待配送订单（<%= @today_orders.size %>）</h2>
+    </div>
+    <% end %>
+    <% @today_orders.each do |order| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          订单号：<%= order.order_no %>
+        </h3>
+      </div>
+      <div class="panel-body">
+        
+        <div class="orders">
+          <table class="table table-responsive">
+            <% order.line_items.each_with_index do |item,index| %>
+            <tr>
+              <td>
+                <div class="item-extra-info">
+                  <%= image_tag item.product.image.url(:small), class: "img-responsive pull-left" %>
+                  <div style="margin-left: 70px">
+                    <h4><%= item.product.title %></h4>
+                    <p>￥<%= product_price_tag(item.product.low_price) %>（<%= item.product.units %>） × <%= item.quantity %></p>
+                  </div>
+                  
+                </div>
+              </td>
+              <td>
+                ￥<%= product_price_tag(item.total_price) %>
+              </td>
+            </tr>
+            <% end %>
+          </table>
+        </div>
+        
+      </div>
+      <div class="panel-footer">
+        收货人手机：<%= order.user_mobile %><br />
+        配送地址：<%= order.user_apartment_name %>
+        <hr />
+        订单总额：￥<%= product_price_tag(order.total_price) %> 抵扣：-￥<%= product_price_tag(order.discount_price) %><br/>
+        下单日期：<%= order.created_at.strftime("%Y-%m-%d %H:%M:%S") %><br/>
+        订单状态：<%= render_order_state(order) %><br />
+        <div class="order-operation">
+          <% if order.can_prepare_deliver? %>
+            <%= link_to "准备配送", prepare_deliver_cpanel_order_path(order, for: 'home'), class: "btn btn-primary btn-sm", method: :patch, confirm: "你确定吗？" %>
+          <% end %>
+          <% if order.can_deliver? %>
+            <%= link_to "开始配送", deliver_cpanel_order_path(order, for: 'home'), class: "btn btn-primary btn-sm", method: :patch, confirm: "你确定吗？" %>
+          <% end %>
+          <% if order.can_complete? %>
+            <%= link_to "确认收货", complete_cpanel_order_path(order, for: 'home'), class: "btn btn-success btn-sm", method: :patch, confirm: "你确定吗？" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+
+</div>

@@ -1,0 +1,25 @@
+<div class="photo-form-fields">
+  <%= f.input :image, label: "产品简介图片" %>
+  <%= f.hidden_field :image_cache %>
+  <%= f.input :sort, label: "图片显示顺序", input_html: { style: "width: 100px;" } %>
+  
+  <% if f.object.image? -%>
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-3">
+      <%= image_tag f.object.image, style:"width: 100px" %>
+    </div>
+  </div>
+  
+  <% end -%>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-9">
+      <div class="checkbox">
+        <label class="checkbox">
+          <%= f.check_box :_destroy %> 删除简介图片
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+

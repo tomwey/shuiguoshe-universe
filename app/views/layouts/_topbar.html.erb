@@ -1,0 +1,21 @@
+<div class="topbar">
+  <div class="container">
+    <div class="topbar-box">
+      <div class="row">
+        <div class="col-md-6">
+          <%= raw SiteConfig.welcome_html %>
+          <span style="padding-left: 20px;"><%= SiteConfig.contact_us %></span>
+        </div>
+        <div class="col-md-6">
+          <div style="text-align:right;">
+            <% if current_user %>
+              <%= render '/users/user_signed_in' %>
+            <% else %>
+              <%= render '/users/user_signed_out' %>
+            <% end %>
+          </div>
+        </div> <!-- end user login in -->
+      </div> <!-- end row -->
+    </div> <!-- end topbar-box -->
+  </div> <!-- end container -->
+</div> <!-- end topbar -->

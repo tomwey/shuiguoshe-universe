@@ -1,0 +1,119 @@
+<% if mobile? %>
+  <% content_for :left_bar_button do %>
+    <a href="<%= home_user_path %>" class="navbar-button left user"></a>
+  <% end %>
+
+  <% content_for :right_bar_button do %>
+    <a href="<%= show_cart_path %>" class="navbar-button right cart"></a>
+  <% end %>
+<% end %>
+
+<div class="home-ads-container">
+  <% cache cache_key_for('carousel_ads', @banners) do %>
+  <div id="carousel-ads" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <% if @banners.size > 1 %>
+    <ol class="carousel-indicators">
+      <% @banners.each_with_index do |banner, index| %>
+          <li data-target="#carousel-ads" data-slide-to="<%= index %>" class="<%= index == 0 ? "active" : "" %>"></li>
+      <% end %>
+    </ol>
+    <% end %>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <% @banners.each_with_index do |banner, index| %>
+        <% cache(banner) do %>
+        <div class="item <%= index == 0 ? "active" : "" %>">
+          <%= render_banner_image(banner) %>
+          <div class="carousel-caption">
+            
+          </div>
+        </div>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+  <% end %>
+</div>
+
+<% if mobile? %>
+<div class="container">
+  <div class="row product_types">
+    <% ProductType.all_types.each do |type| %>
+    <div class="col-sm-6 col-xs-6">
+      <%= link_to type.name, category_items_path(type) %>
+    </div>
+    <% end %>
+  </div>
+</div>
+
+<% if @discounted_products.any? %>
+<div class="container">
+  <div class="home-discount-products-container">
+    <h2>限时抢购</h2>
+    <% cache cache_key_for('home_discount_items_mobile', @discounted_products) do %>
+    <div class="items-list">
+      <%= render_mobile_grid_for(@discounted_products, "/products/discount_product_mobile") %>
+    </div>
+    <% end %>
+  </div>
+</div>
+<% end %>
+
+<div class="container">
+  <div class="home-hot-sales">
+    <h2>热门订购</h2>
+    <% if @products.any? %>
+      <% cache cache_key_for('home_hot_items_mobile', @products) do %>
+      <div class="items-list">
+        <%= render_mobile_grid_for(@products, "/products/product_mobile") %>
+      </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<% end %>
+
+<% if not mobile? %>
+
+<%= render "/home/discount_sale" %>
+
+<div class="row home-content-box">
+  <div class="col-md-9">
+    <% if @products.any? %>
+    <% cache cache_key_for('home_hot_products', @products) do %>
+    <div class="content-box">
+      <h2>热门订购</h2>
+      <%= render_grid_for @products %>
+    </div>
+    <% end %>
+    <% end %>
+  </div>
+  <div class="col-md-3">
+    <div class="sidebar-right">
+      <div class="sidebar-right-box trust">
+        <%= image_tag "trust.gif", alt: "trust" %>
+      </div>
+      <%= render 'home/pages' %>
+      <%= render 'newsblasts/newsblasts_list' %>
+      <%= render 'sidebar_ads/ads_list' %>
+    </div>
+  </div>
+</div>
+
+<% end %>
+<% content_for :scripts do %>
+<script>
+
+$(function() {
+  $('.carousel').carousel({
+    interval: 4000
+  });
+});
+
+</script>
+
+<% end %>

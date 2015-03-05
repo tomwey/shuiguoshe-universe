@@ -1,0 +1,69 @@
+<%= form_for(Order.new, url: product_orders_path(@product), html: { class: "form-horizontal" }) do |f| %>
+  <%= render '/shared/error_messages', target: f.object %>
+  <div class="form-group">
+    <%= f.label :quantity, "* 购买数量 (单位:斤)", class: "control-label col-sm-3" %>
+    <div class="col-sm-4">
+      <%= f.text_field :quantity, placeholder: "至少购买1斤", onkeyup:"App.checkValue(this)", onafterpaste:"App.checkValue", class: "form-control" %>
+      <span class="help-block">至少购买一斤</span>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :deliver_time, "* 配送时间", class: "control-label col-sm-3" %>
+    <div class="col-sm-4">
+      <%= f.select :deliver_time, SiteConfig.deliver_times.map { |s| [s,s] }, { prompt: "--请选择配送时间--" }, { class: "form-control" } %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :deliver_address, "* 配送至", class: "control-label col-sm-3" %>
+    <div class="address-html-container">
+      <% if current_user.apartment.present? %>
+      <div class="col-sm-8">
+        <p style="height: 20px; line-height:30px;"><%= current_user.apartment %>&nbsp;<span class="label label-warning" style="font-size: 14px;">可以到 "我的水果社 > 配送设置" 进行修改</span></p>
+        <%= f.hidden_field :apartment_id, value: current_user.apartment_id %>
+      </div>
+      <% else %>
+      <div class="col-sm-4">
+        <%= f.select :apartment_id, Apartment.opened.map { |a| [a.name, a.id] }, { prompt: "--请选择您所在的小区--" }, { class: "form-control", onchange: "updateButtonState();" } %>
+      </div>
+      <div class="col-sm-2">
+        <a class="btn btn-warning" data-user-id="<%= current_user.id %>"
+           onclick="App.doSaveAddress(this)" id="save_address">保存到配送设置</a>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :note, "备注信息", class: "control-label col-sm-3" %>
+    <div class="col-sm-6">
+      <%= f.text_field :note, placeholder: "提醒注意的事项 (选填)", class: "form-control", style: "width: 416px;" %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-10">
+      <%= f.submit "确认下单", class: "btn btn-success" %>
+    </div>
+  </div>
+
+<% end %>
+
+<% content_for :scripts do %>
+<script>
+
+function updateButtonState() {
+  var select = $("#order_apartment_id");
+  if (select.val() == '') {
+    $("#save_address").attr("disabled", true);
+  } else {
+    $("#save_address").removeAttr("disabled");
+  }
+}
+
+updateButtonState();
+
+</script>
+<% end %>
+

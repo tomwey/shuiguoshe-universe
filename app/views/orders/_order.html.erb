@@ -1,0 +1,18 @@
+<tr id="item-row-<%= order.id %>">
+  <td>
+    <%= link_to "查看订单下的商品", order, class: "order-detail-link" %>
+  </td>
+  <td>￥<%= product_price_tag(order.total_price) %></td>
+  <td>-￥<%= product_price_tag(order.discount_price) %></td>
+  <td><%= order.mobile %></td>
+  <td><%= order.apartment.try(:name) %></td>
+  <td><%= order.created_at.strftime("%Y-%m-%d %H:%M:%S") %></td>
+  <td><%= render_order_state(order) %></td>
+  <td>
+    <% if owner?(order) %>
+      <% if can_cancel?(order) %>
+        <a onclick="App.cancelOrder(this)" data-remote="true" id="item-row-<%= order.id %>-td" data-current="<%= @current %>" data-id="<%= order.id %>" class="btn btn-danger btn-sm">取消订单</a>
+      <% end %>
+    <% end %>
+  </td>
+</tr>

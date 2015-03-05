@@ -1,0 +1,97 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "登录" %>
+  
+<div class="container">
+  <div class="user-login-form">
+    <%= notice_message %>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), role: "form" ) do |f| %>      
+      <div class="form-group">
+        <%= f.text_field :mobile, class: "form-control", placeholder: '请输入手机号' %>
+      </div>
+      
+      <div class="form-group">
+        <%= f.password_field :password, class: "form-control", autocomplete: "off", placeholder: "请输入密码" %>
+      </div>
+
+      <% if devise_mapping.rememberable? -%>
+        <div class="checkbox">
+          <label>
+            <%= f.check_box :remember_me, checked: true %> 记住我
+          </label>
+        </div>
+      <% end -%>
+
+      <button type="submit" class="btn btn-success btn-block">登录</button>
+  
+    <% end %>
+  </div>
+  
+  <div class="links">
+    <div class="row">
+      <div class="col-xs-6">
+        <%= link_to "免费注册", new_user_registration_path %>
+      </div>
+      <div class="col-xs-6" style="text-align: right">
+        <%= link_to "找回密码", forget_password_path %>
+      </div>
+    </div>
+  </div>
+  
+</div>
+  
+<% else %>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="user-login-form">
+        <h2>会员登录</h2>
+        <%= notice_message %>
+        <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "form-horizontal" }) do |f| %>
+            <div class="form-group">
+              <%= f.label :mobile, "手机", class: "col-sm-3 control-label" %>
+              <div class="col-sm-9">
+                <%= f.text_field :mobile, class: "form-control", placeholder: '请输入手机号', autofocus:true, style: "width: 300px;" %>
+              </div>
+            </div>
+      
+            <div class="form-group">
+              <%= f.label :password, "密码", class: "col-sm-3 control-label" %>
+              <div class="col-sm-9">
+                <%= f.password_field :password, class: "form-control", autocomplete: "off", style: "width: 300px;", placeholder: "密码" %>
+              </div>
+            </div>
+
+            <% if devise_mapping.rememberable? -%>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                  <div class="checkbox">
+                    <label>
+                      <%= f.check_box :remember_me %> 记住我
+                    </label>
+                  </div>
+                </div>
+            </div>
+            <% end -%>
+
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-success">登录</button><%= link_to "忘记了密码？", forget_password_path, class:"forget-password" %>
+              </div>
+            </div>
+      
+        <% end %>
+      </div>
+    
+    </div>
+    <div class="col-md-4">
+      <div class="user-reg-info">
+        <h3>还没有水果社账号？</h3>
+        <% if SiteConfig.sign_up_score and SiteConfig.sign_up_score.to_i > 0 %>
+        <p>注册即送<%= SiteConfig.sign_up_score %>积分, 抵扣<%= SiteConfig.sign_up_score.to_i / 100 %>元</p>
+        <% end %>
+        <%= link_to "立即注册", new_user_registration_path, class: "btn btn-success" %>
+      </div>
+    </div>
+  </div>
+<% end %>
+

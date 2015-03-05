@@ -1,0 +1,31 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "给我留言" %>
+
+<div class="container">
+  <div class="user-login-form">
+    <%= simple_form_for(@message, html: { class: "" },
+            wrapper_mappings: {
+              check_boxes: :horizontal_radio_and_checkboxes,
+              radio_buttons: :horizontal_radio_and_checkboxes,
+              file: :horizontal_file_input,
+              boolean: :horizontal_boolean
+            }) do |f| %>
+
+        <%= f.input :title, label: false, placeholder:"标题" %>
+        <%= f.input :body, as: :text, label: false, placeholder:"说点什么", input_html: { rows: 8 } %>
+      
+        <button type="submit" class="btn btn-success btn-block" data-disable_with="正在提交...">提交</button>
+    
+    <% end %>
+  </div>
+
+</div>
+
+<% else %>
+<div class="user-box">
+  <h2>给我们留言</h2>
+  <%= render 'form' %>
+</div>
+<% end %>
+

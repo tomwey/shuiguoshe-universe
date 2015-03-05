@@ -1,0 +1,15 @@
+<div class="user-info">
+  <div class="user-avatar pull-left">
+    <%= user_avatar_tag(current_user, :big) %>
+  </div>
+  <div class="user-intro pull-left">
+    <h3><%= current_user.hack_mobile %></h3>
+  </div>
+  <div class="user-points pul-right">
+    <h3>积分</h3>
+    <p><%= current_user.score %></p>
+    <%= link_to "积分明细", points_user_path, class: "btn btn-success btn-xs" %>
+  </div>
+</div>
+
+

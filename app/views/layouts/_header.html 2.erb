@@ -1,0 +1,47 @@
+<% 
+if params[:type_id]
+  type = params[:type_id].to_i
+  if type > 2 or type < 1
+    type = 1
+  end
+else
+  type = 0
+end
+
+if params[:q]
+  keyword = params[:q].gsub(/\s+/, "")
+else
+  keyword = ""
+end
+
+ %>
+<% cache ["#{current_user.try(:id)}_#{current_user.try(:admin?)}_#{controller_name}_#{type}_#{keyword}_#{@current}", cart.my_cache_key] do %>
+<%= render '/layouts/topbar' %> <!-- topbar -->
+
+<%= render '/layouts/logo_bar' %>
+
+<nav class="navbar navbar-static-top " role="navigation">
+  <div class="container">
+    <!--div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      
+    </div-->
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="<%= @current == 'home_index' ? "active" : "" %>"><a href="/">首页</a></li>
+        <% ProductType.all_types.each do |type| %>
+          <li class="<%= controller_name == 'products' and params[:type_id].to_i == type.id ? "active" : "" %>"><%= link_to type.name, category_items_path(type) %></li>
+        <% end %>
+        <li class="<%= controller_name == 'apartments' ? "active" : "" %>"><%= link_to "服务小区", apartments_path %></li>
+
+      </ul>
+      <div class="navbar-text navbar-right hotline"><%= raw SiteConfig.hotline_html %></div>
+    </div><!-- /.nav-collapse -->
+  </div><!-- /.container -->
+</nav><!-- /.navbar -->
+<% end %>

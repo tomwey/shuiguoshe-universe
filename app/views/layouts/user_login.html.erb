@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%= render_page_title %>
+  <meta charset='utf-8' />
+  <meta name="keywords" content="<%= @meta_keywords %>" />
+  <meta name="description" content="<%= @meta_description %>" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--meta name="viewport" content="width=device-width, initial-scale=1"-->
+  <% if mobile? %>
+    <%= stylesheet_link_tag  'mobile' %>
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta content='True' name='HandheldFriendly' />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="apple-touch-icon-precomposed" href="<%= asset_path("favicon.ico") %>" />
+    <%= yield :styles %>
+  <% else %>
+    <meta name='viewport' content='width=1170'><!-- non responsive -->
+    <%= stylesheet_link_tag  'front', 'data-turbolinks-track' => true %>
+  <% end %>
+  
+  <link rel="shortcut icon" href="<%= asset_path("favicon.ico") %>" />
+  
+  <%= csrf_meta_tags %>
+  <%= render 'layouts/shim' %>
+  
+</head>
+<body>
+  <% if mobile? %>
+  
+    <nav class="navbar navbar-fixed-top " role="navigation">
+      <div class="row">
+        <div class="col-xs-2">
+          <%= yield :left_bar_button %>
+        </div>
+        <div class="col-xs-8">
+          <a class="logo" href="/"><%= content_for?(:mobile_title) ? yield(:mobile_title) : "水果社" %></a>
+        </div>
+        <div class="col-xs-2">
+          <%= yield :right_bar_button %>
+        </div>
+      </div>
+      
+    </nav>
+    <%= yield %>
+    <div id="scrolltop" style="display: none;">返回顶部</div>
+    <footer id="footer">
+      <p>
+        版权所有 &copy; <%= Time.now.year %> <%= link_to "水果社", "http://www.shuiguoshe.com" %>
+      </p>
+    </footer>
+  
+  <% else %>
+  <div class="user-navbar">
+    <div class="container">
+      <a class="logo" href="/"><%= image_tag 'logo.png', alt: "水果社" %></a>
+    </div>
+  </div>
+  <div class="container">
+    <div class="user-login-box">
+      <%= yield %>
+    </div>
+    
+    <footer class="footer2">
+      <div class="link">
+        <%= link_to '关于水果社', about_path %> | <%= link_to '帮助中心', order_help_path %>
+      </div>
+      <div class="center">
+        <small>
+            版权所有 &copy; <%= Time.now.year %> <%= link_to "水果社", "http://shuiguoshe.com", target: "_blank" %> 保留所有权利.蜀ICP备14031323号
+          </small>
+      </div>
+    </footer>
+  </div>
+  <% end %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= yield :scripts %>
+</body>
+</html>

@@ -1,0 +1,3 @@
+<% if current_user.admin? %>
+<%= link_to "进入后台", cpanel_root_path %> - 
+<% end %>您好,<%= current_user.hack_mobile %> - <%= link_to "我的水果社", home_user_path %> - </span><%= link_to "我的订单", orders_user_path %> - <%= link_to "退出", destroy_user_session_path, method: :delete %><!--span class="dot">•</span><span><i class="glyphicon glyphicon-phone"></i> 18048553687<span-->

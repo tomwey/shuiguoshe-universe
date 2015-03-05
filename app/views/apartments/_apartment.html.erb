@@ -1,0 +1,7 @@
+<% cache(apartment) do %>
+<div class="apartment col-md-3 center">
+  <%= image_tag apartment.image.url(:normal), alt: apartment.name %>
+  <h3 class="f16"><%= apartment.name %></h3>
+  <p>已订<span class="price-numeric green f24"><%= apartment.orders_count %></span>单</p>
+</div>
+<% end %>

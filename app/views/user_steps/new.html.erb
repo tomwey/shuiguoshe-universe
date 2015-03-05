@@ -1,0 +1,47 @@
+<% if mobile? %>
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "找回密码" %>
+  
+  <div class="container">
+    <div class="user-login-form">
+      <%= simple_form_for(@user, url: forget_password_account_path, html: { class: '', method: :post },
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <%= f.input :mobile, label: false, placeholder: "请输入注册时的手机号" %>
+
+          <%= f.submit "下一步", class: "btn btn-success btn-block" %>
+          
+      <% end %>
+    </div>
+  </div>
+  
+<% else %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <%= render '/user_steps/step_info' %>
+      <%= simple_form_for(@user, url: forget_password_account_path, html: { class: 'form-horizontal', method: :post },
+        wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <%= f.input :mobile, label: "手机号", placeholder: "请输入注册时的手机号", input_html: { style: "width: 300px;"} %>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <%= f.submit "下一步", class: "btn btn-success" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

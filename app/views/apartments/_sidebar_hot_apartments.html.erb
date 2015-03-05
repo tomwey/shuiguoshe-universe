@@ -1,0 +1,24 @@
+<% if @hot_apartments.any? %>
+  <% cache(cache_key_for('sidebar_hot_apartments', @hot_apartments)) do %>
+  <div class="sidebar-box">
+    <h2>热门订购小区</h2>
+    <div class="apartments sidebar-items">
+      <% @hot_apartments.each do |apartment| %>
+      <% cache apartment do %>
+      <div class="apartment sidebar-item">
+        <div class="row">
+          <div class="col-xs-6">
+            <%= image_tag apartment.image, alt: apartment.name, style: "width: 108px; height: 90px;" %>
+          </div>
+          <div class="col-xs-6">
+            <div><%= apartment.name %></div>
+            <div>已订<em class="green f16"><%= apartment.orders_count %></em>单</div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+<% end %>

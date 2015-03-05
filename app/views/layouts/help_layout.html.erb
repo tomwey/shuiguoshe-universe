@@ -1,0 +1,20 @@
+<% content_for :content do %>
+<div class="row container-box">
+  <div class="col-sm-2">
+    <div class="slide-left help-section">
+      <h2 class="f16">帮助中心</h2>
+      <ul class="unstyled">
+        <li><%= link_to "订购流程", order_help_path %></li>
+        <li><%= link_to "支付说明", pay_help_path %></li>
+        <li><%= link_to "配送取货", deliver_help_path %></li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-10">
+    <%= yield %>
+  </div>
+</div>
+
+<% end %>
+
+<%= render template: "/layouts/application" %>

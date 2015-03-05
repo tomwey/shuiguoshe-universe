@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <h2>找回密码</h2>
+      <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { class: 'form-horizontal' },
+        wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <%= f.input :email, label: "邮箱", input_html: { style: "width: 300px;"} %>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <%= f.submit "找回密码", class: "btn btn-success" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+
+

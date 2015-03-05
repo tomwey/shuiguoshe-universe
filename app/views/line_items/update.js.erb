@@ -1,0 +1,31 @@
+$("#<%= @oper_id %>").data("loading", '0');
+
+<% if @success %>
+// 更新条目的信息
+<% if mobile? %>
+$("#cart_1_<%= @line_item_id %>").replaceWith("<%= j render 'line_items/line_item_mobile', line_item: @line_item %>");
+<% else %>
+$("#cart_1_<%= @line_item_id %>").replaceWith("<%= j render @line_item %>");
+<% end %>
+$("#cart_2_<%= @line_item_id %>").replaceWith("<%= j render 'carts/line_item', item: @line_item %>");
+
+// 更新总价
+var totalPrice = "<%= product_price_tag(cart.total_price) %>"
+$("#cart_1_total_price").text(totalPrice);
+$("#cart_2_total_price").text(totalPrice);
+
+// 计算购物车总数
+var total = $("#cart_2_total_items").data("cart-total");
+
+<% if @type == '-1' %>
+  total = parseInt(total) - 1;
+<% else %>
+  total = parseInt(total) + 1;
+<% end %>
+
+$("#cart_2_total_items").data("cart-total", total);
+$("#cart_2_total_items").text(total);
+
+$("#cart_2_total_items_2").text(total);
+
+<% end %>

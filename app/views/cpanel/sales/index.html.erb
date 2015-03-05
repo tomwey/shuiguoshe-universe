@@ -1,0 +1,48 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">卖场列表</h3>
+    
+  </div>
+  <div class="panel-body">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>卖场封面</th>
+          <th>卖场标题</th>
+          <th>卖场子标题</th>
+          <th>卖场Logo</th>
+          <th>活动截止</th>
+          <th>背景颜色</th>
+          <th>卖场广告</th>
+          <th></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @sales.each do |sale| %>
+          <tr>
+            <td><%= link_to sale.id, [:cpanel, sale] %></td>
+            <td><%= image_tag sale.cover_image.small %></td>
+            <td><%= sale.title %></td>
+            <td><%= sale.subtitle %></td>
+            <td><%= image_tag sale.logo.logo_small %></td>
+            <td><%= sale.closed_at.strftime("%Y-%m-%d") if sale.closed_at %></td>
+            <td><p style="width: 80px; height: 40px; line-height: 40px; text-align: center; background-color: <%= sale.background_color %>"><%= sale.background_color %></p></td>
+            <td><%= image_tag sale.ad_image.ad_small %></td>
+            <td>
+              <%= link_to '编辑', edit_cpanel_sale_path(sale), class: "btn btn-xs btn-default" %>
+              <%= link_to '删除', [:cpanel, sale], method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-xs btn-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="text-center"><%= will_paginate @sales, renderer: BootstrapPagination::Rails %></div>
+  
+</div>
+
+<%= link_to '新建卖场信息', new_cpanel_sale_path, class: "btn btn-primary" %>
+

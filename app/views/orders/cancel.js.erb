@@ -1,0 +1,22 @@
+$("#item-row-<%= @order.id %>-td").data("loading", '0');
+
+<% if @status == 1 %>
+  $("#incompleted_orders_link").text("未完成(<%= @incompleted_orders_count > 0 ? @incompleted_orders_count - 1 : 0 %>)")
+  <% if @incompleted %>
+    $("#item-row-<%= @order.id %>").remove();
+    $("#item-row-info-<%= @order.id %>").remove();
+    <% if @incompleted_orders_count == 0 %>
+      $("#orders_list_table").html("<%= j render 'orders/order_list2' %>");
+      $("#mobile-orders").text("暂无订单");
+    <% end %>
+  <% else %>
+  
+  <% if mobile? %>
+  $("#item-row-<%= @order.id %>").replaceWith("<%= j render 'orders/mobile_order', order: @order %>");
+  <% else %>
+    $("#item-row-<%= @order.id %>").replaceWith("<%= j render @order %>");
+  <% end %>
+  <% end %>
+<% elsif @status == -1 %>
+console.log("非法操作");
+<% end %>

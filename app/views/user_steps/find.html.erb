@@ -1,0 +1,86 @@
+<% if mobile? %>
+
+<%= render "layouts/mobile_navbar", left: "back", right: "home", title: "找回密码" %>
+  
+  <div class="container">
+    <div class="user-login-form">
+      <%= simple_form_for(@user, url: check_code_path, html: { class: '', method: :post, id: "new_user" },
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          <div class="row" style="margin-bottom: 20px; font-weight: bold; font-size: 14px">
+            <div class="col-xs-12">
+              <%= @user.hack_mobile %>, 您好
+              <%= f.input :mobile, as: :hidden, input_html: { value: @user.mobile } %>
+              <%= f.input :reset_password_token, as: :hidden, input_html: { value: @user.reset_password_token } %>
+            </div>
+          </div>
+          
+          <div style="display:none">
+            <%= f.input :code_type, as: :hidden, input_html: { value: "2" } %>
+          </div>
+          
+          <div class="auth-code-container">
+            <%= f.input :code, label: false,placeholder: '输入6位手机验证码', input_html: { style: "width: 150px" } %>
+            <div class="get-auth-code">
+              <a onclick="App.getCode(this)" class="btn btn-warning" id="auth_code">获取验证码</a>
+            </div>
+          </div>
+          
+          <%= f.submit "下一步", class: "btn btn-success btn-block" %>
+          
+      <% end %>
+    </div>
+  </div>
+  
+<% else %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="user-login-form">
+      <%= render '/user_steps/step_info' %>
+      <%= simple_form_for(@user, url: check_code_path, html: { class: 'form-horizontal', method: :post, id: "new_user" },
+        wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+          
+          <div class="row" style="margin-bottom: 20px; font-weight: bold; font-size: 14px">
+            <div class="col-sm-3" style="text-align: right;">
+              手机
+            </div>
+            <div class="col-sm-9">
+              <%= @user.hack_mobile %>
+              <%= f.input :mobile, as: :hidden, input_html: { value: @user.mobile } %>
+              <%= f.input :reset_password_token, as: :hidden, input_html: { value: @user.reset_password_token } %>
+            </div>
+          </div>
+          <%= f.input :code, label: "手机验证码", placeholder: "请输入重置验证码", input_html: { style: "width: 300px;"} %>
+          
+          <div class="row" style="margin-bottom: 20px">
+            <div class="col-sm-3" style="text-align: right;">
+              
+            </div>
+            <div class="col-sm-9">
+              <a onclick="App.getCode(this)" class="btn btn-warning">获取手机验证码</a>
+              <div style="display:none">
+                <%= f.input :code_type, as: :hidden, input_html: { value: "2" } %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+              <%= f.submit "下一步", class: "btn btn-success" %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

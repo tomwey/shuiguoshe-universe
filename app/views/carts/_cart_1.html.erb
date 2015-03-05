@@ -1,0 +1,41 @@
+<div class="user-box container-box my-cart" id="my-cart">
+  <h2>我的购物车</h2>
+  
+  <% if cart.line_items_count == 0 %>
+    <div class="empty-cart">
+      <table>
+        <tr>
+          <td><i class="green glyphicon glyphicon-shopping-cart" style="font-size:30px;"></i></td>
+          <td>购物车内暂时没有商品，您可以<a href="/" class="green">去首页</a>挑选喜欢的商品</td>
+        </tr>
+      </table>
+    </div>
+  
+  <% else %>
+  <% cache ["cart1_#{current_user.try(:id)}_line_items", cart.my_cache_key] do %>
+    <table class="table common-table">
+      <tr class="table-head">
+        <th>商品名称</th>
+        <th>规格</th>
+        <th>单价（元）</th>
+        <th>数量</th>
+        <th>总价（元）</th>
+        <th>操作</th>
+      </tr>
+      <%= render cart.line_items %>
+      <tr>
+        <td colspan="6" class="table-head">
+          <div class="cart-total-price">
+            总计（不含运费）：<span class="green">¥</span><span class="green numeric" id="cart_1_total_price"><%= product_price_tag(cart.total_price) %></span>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <% end %>
+    <div class="text-right">
+      <%= link_to "提交订单", checkout_path, class: "btn btn-success" %>
+    </div>
+  <% end %>
+
+</div>
+

@@ -1,0 +1,20 @@
+<% cache [item.id, item.quantity, item.product_updated_at] do %>
+<tr id="cart_2_line_item_<%= item.id %>">
+  <td width="20%">
+    <%= link_to image_tag(item.product.image.url(:small)), item.product, title: item.product.title, target: "_blank" %>
+  </td>
+  <td width="55%" class="item-title">
+    
+      <%= link_to item.product.title, item.product, title: item.product.title, target: "_blank" %>
+    <div class="text-muted">
+      <%= item.product.units %><br>
+      <%= product_price_tag(item.product.low_price) %> &times; <%= item.quantity %>
+    </div>
+    
+  </td>
+  <td width="20%" style="text-align: right">
+    <div class="text-muted"><%= product_price_tag(item.total_price) %></div>
+    <a onclick="App.deleteItem(this)" data-id="<%= item.id %>" data-type="2" id="cart_2_line_item_<%= item.id %>_link" data-loading="0" class="btn btn-xs btn-danger" style="color:white;">删除</a>
+  </td>
+</tr>
+<% end %>

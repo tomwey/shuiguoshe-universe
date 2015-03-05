@@ -1,0 +1,24 @@
+<%= simple_form_for([:cpanel, @newsblast], html: { class: "form-horizontal" },wrapper: :horizontal_form,
+        wrapper_mappings: {
+          check_boxes: :horizontal_radio_and_checkboxes,
+          radio_buttons: :horizontal_radio_and_checkboxes,
+          file: :horizontal_file_input,
+          boolean: :horizontal_boolean
+        }) do |f| %>
+  <%= render "/shared/error_messages", target: @newsblast %>
+
+  <div class="col-md-6 col-md-offset-3">
+    
+    <%= f.input :title, label: "公告标题" %>
+    <%= f.input :body, label: "公告内容", input_html: { style: "height: 200px;" } %>
+    <%= f.input :sort, label: "显示顺序" %>
+      
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-10">
+        <%= f.submit "提交", class: "btn btn-primary" %>&emsp;<%= link_to '返回', cpanel_newsblasts_path, class: "btn btn-default" %>
+      </div>
+    </div>
+  </div>
+
+  
+<% end %>

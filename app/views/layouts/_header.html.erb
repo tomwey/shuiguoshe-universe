@@ -1,0 +1,9 @@
+<% 
+@types = ProductType.all_types
+%>
+ 
+<% cache ["#{current_user.try(:mobile)}_#{current_user.try(:admin?)}_#{controller_name}_#{@current}_#{params[:type_id]}", cart.my_cache_key, @types] do %>
+<%= render '/layouts/topbar' %> <!-- topbar -->
+<%= render '/layouts/logo_bar' %>
+
+<% end %>
